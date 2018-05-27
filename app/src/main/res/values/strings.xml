@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Patch Tracker</string>
+    <string name="text_greeting">Hello!</string>
+    <string name="button_select_date">Select first patch date</string>
+</resources>
