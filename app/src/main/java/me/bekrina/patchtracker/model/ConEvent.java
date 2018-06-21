@@ -2,13 +2,13 @@ package me.bekrina.patchtracker.model;
 
 import java.util.Date;
 
-public class PatchEvent implements Event {
-    public PatchEvent(Date date, EventType type) {
+public class Event {
+    public Event(Date date, EventType type) {
         this.date = date;
         this.type = type;
     }
     public enum EventType {
-        PUTON, CHANGE, PUTOFF
+        PATCH_ON, PATCH_CHANGE, PATCH_OFF, PILL
     }
     private EventType type;
     private Date date;
