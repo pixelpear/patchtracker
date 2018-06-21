@@ -2,8 +2,8 @@ package me.bekrina.patchtracker.model;
 
 import java.util.Date;
 
-public class Event {
-    public Event(Date date, EventType type) {
+public class ConEvent {
+    public ConEvent(Date date, EventType type) {
         this.date = date;
         this.type = type;
     }

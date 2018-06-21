@@ -19,8 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import me.bekrina.patchtracker.model.Event;
-import me.bekrina.patchtracker.model.PatchEvent;
+import me.bekrina.patchtracker.model.ConEvent;
 
 public class CustomCalendarView extends LinearLayout {
     private Context context;
@@ -115,8 +114,10 @@ public class CustomCalendarView extends LinearLayout {
         currentDate.setText(sDate);
 
         // TODO: here should be DB query or smth alike
-        List<Event> events = new ArrayList<>();
-        events.add(new PatchEvent(new Date(1528369106000L), PatchEvent.EventType.PUTON));
+        List<ConEvent> events = new ArrayList<>();
+        events.add(new ConEvent(new Date(1529583360000L), ConEvent.EventType.PATCH_ON));
+        TrackerApplication application = (TrackerApplication)context.getApplicationContext();
+        application.setType(TrackerApplication.ContraceptionType.PATCH);
 
         mAdapter = new GridAdapter(context, visibleDates, mainCalendar, events);
         calendarGridView.setAdapter(mAdapter);
