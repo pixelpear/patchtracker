@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CalendarActivity">
-    <CalendarView
+    <me.bekrina.patchtracker.CustomCalendarView
         android:id="@+id/calendar"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </CalendarView>
+    </me.bekrina.patchtracker.CustomCalendarView>
 </android.support.constraint.ConstraintLayout>
