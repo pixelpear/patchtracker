@@ -9,23 +9,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import me.bekrina.patchtracker.model.Event;
+import me.bekrina.patchtracker.model.ConEvent;
 
 public class GridAdapter extends ArrayAdapter {
     private static final String TAG = GridAdapter.class.getSimpleName();
     private LayoutInflater mInflater;
     private List<Date> visibleDates;
     private Calendar currentCalendar;
-    private List<Event> events;
+    private List<ConEvent> events;
     private Context context;
-    public GridAdapter(Context context, List<Date> visibleDates, Calendar currentCalendar, List<Event> events) {
+    public GridAdapter(Context context, List<Date> visibleDates, Calendar currentCalendar, List<ConEvent> events) {
         super(context, R.layout.single_cell_layout);
         this.visibleDates = visibleDates;
         this.currentCalendar = currentCalendar;
@@ -51,7 +50,7 @@ public class GridAdapter extends ArrayAdapter {
         int currentMonth = this.currentCalendar.get(Calendar.MONTH) + 1;
         int currentYear = this.currentCalendar.get(Calendar.YEAR);
         if (dateMonth == currentMonth && dateYear == currentYear) {
-            view.setBackgroundColor(Color.parseColor("#FF5733"));
+            view.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryLight));
         } else {
             view.setBackgroundColor(Color.parseColor("#cccccc"));
         }
@@ -63,12 +62,26 @@ public class GridAdapter extends ArrayAdapter {
         //Add events to the calendar
         Calendar eventCalendar = Calendar.getInstance();
         for (int i = 0; i < events.size(); i++) {
-            eventCalendar.setTime(events.get(i).getDate());
+            ConEvent event = events.get(i);
+            eventCalendar.setTime(event.getDate());
             if (dayOfMonth == eventCalendar.get(Calendar.DAY_OF_MONTH) && dateMonth == eventCalendar.get(Calendar.MONTH) + 1
                     && dateYear == eventCalendar.get(Calendar.YEAR)) {
                 // Note: set viewport proportions equal (height/width)
-                Drawable myDrawable = context.getDrawable(R.drawable.patch_normal);
-                cell.setBackground(myDrawable);
+                TrackerApplication application = (TrackerApplication)context.getApplicationContext();
+                if (application.getType() == TrackerApplication.ContraceptionType.PATCH) {
+                    Drawable eventImage;
+                    switch (event.getType()) {
+                        case PATCH_ON: eventImage = context.getDrawable(R.drawable.patch_on_accent);
+                            cell.setBackground(eventImage);
+                            break;
+                        case PATCH_CHANGE: eventImage = context.getDrawable(R.drawable.patch_change);
+                            cell.setBackground(eventImage);
+                            break;
+                        case PATCH_OFF: eventImage = context.getDrawable(R.drawable.patch_off);
+                            cell.setBackground(eventImage);
+                            break;
+                    }
+                }
             }
         }
         return view;
