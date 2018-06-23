@@ -70,16 +70,36 @@ public class GridAdapter extends ArrayAdapter {
                 TrackerApplication application = (TrackerApplication)context.getApplicationContext();
                 if (application.getType() == TrackerApplication.ContraceptionType.PATCH) {
                     Drawable eventImage;
-                    switch (event.getType()) {
-                        case PATCH_ON: eventImage = context.getDrawable(R.drawable.patch_on_accent);
-                            cell.setBackground(eventImage);
-                            break;
-                        case PATCH_CHANGE: eventImage = context.getDrawable(R.drawable.patch_change);
-                            cell.setBackground(eventImage);
-                            break;
-                        case PATCH_OFF: eventImage = context.getDrawable(R.drawable.patch_off);
-                            cell.setBackground(eventImage);
-                            break;
+                    if (event.isMarked()) {
+                        switch (event.getType()) {
+                            case PATCH_ON:
+                                eventImage = context.getDrawable(R.drawable.patch_on);
+                                cell.setBackground(eventImage);
+                                break;
+                            case PATCH_CHANGE:
+                                eventImage = context.getDrawable(R.drawable.patch_change);
+                                cell.setBackground(eventImage);
+                                break;
+                            case PATCH_OFF:
+                                eventImage = context.getDrawable(R.drawable.patch_off);
+                                cell.setBackground(eventImage);
+                                break;
+                        }
+                    } else {
+                        switch (event.getType()) {
+                            case PATCH_ON:
+                                eventImage = context.getDrawable(R.drawable.patch_on_accent);
+                                cell.setBackground(eventImage);
+                                break;
+                            case PATCH_CHANGE:
+                                eventImage = context.getDrawable(R.drawable.patch_change_accent);
+                                cell.setBackground(eventImage);
+                                break;
+                            case PATCH_OFF:
+                                eventImage = context.getDrawable(R.drawable.patch_off_accent);
+                                cell.setBackground(eventImage);
+                                break;
+                        }
                     }
                 }
             }

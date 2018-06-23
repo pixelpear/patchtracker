@@ -7,9 +7,11 @@ public class ConEvent {
         this.date = date;
         this.type = type;
     }
+
     public enum EventType {
         PATCH_ON, PATCH_CHANGE, PATCH_OFF, PILL
     }
+    private boolean marked;
     private EventType type;
     private Date date;
 
@@ -27,5 +29,13 @@ public class ConEvent {
 
     public void setType(EventType type) {
         this.type = type;
+    }
+
+    public boolean isMarked() {
+        return marked;
+    }
+
+    public void setMarked(boolean marked) {
+        this.marked = marked;
     }
 }
