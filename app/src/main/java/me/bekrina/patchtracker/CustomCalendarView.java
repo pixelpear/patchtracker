@@ -1,16 +1,24 @@
 package me.bekrina.patchtracker;
 
+import android.app.Application;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
+import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.threeten.bp.OffsetDateTime;
+import org.threeten.bp.ZoneOffset;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,7 +27,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import me.bekrina.patchtracker.model.ConEvent;
+import me.bekrina.patchtracker.data.AppDatabase;
+import me.bekrina.patchtracker.data.Event;
+import me.bekrina.patchtracker.data.EventViewModel;
 
 public class CustomCalendarView extends LinearLayout {
     private Context context;
@@ -33,6 +43,7 @@ public class CustomCalendarView extends LinearLayout {
     private SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
     //private DatabaseQuery mQuery;  // mock
     private GridAdapter mAdapter;
+    private List<Event> events;
 
     public CustomCalendarView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -43,6 +54,13 @@ public class CustomCalendarView extends LinearLayout {
         setNextButtonClickEvent();
         setGridCellClickEvents();
         Log.d(TAG, "I need to call this method");
+    }
+
+    public void setEvents (List<Event> events) {
+        this.events = events;
+        if (mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     private void initializeUiLayout() {
@@ -84,8 +102,28 @@ public class CustomCalendarView extends LinearLayout {
     }
 
     private void setUpCalendarAdapter(){
-        List<Date> visibleDates = new ArrayList<Date>();
+        List<OffsetDateTime> visibleDatesDT = new ArrayList<>();
 
+        OffsetDateTime calendarDT = OffsetDateTime.now();
+        calendarDT = calendarDT.withDayOfMonth(1);
+        int visibleDaysInPreviousMonthDT = calendarDT.getDayOfWeek().getValue() - 1;
+        calendarDT = calendarDT.plusDays(-visibleDaysInPreviousMonthDT);
+
+        OffsetDateTime lastDayOfMonthDT = OffsetDateTime.now();
+        lastDayOfMonthDT.withDayOfMonth(lastDayOfMonthDT.getMonth().maxLength());
+        int visibleDaysInNextMonthDT = 7 - lastDayOfMonthDT.getDayOfWeek().getValue();
+        maxCalendarCell = visibleDaysInPreviousMonthDT + lastDayOfMonthDT.getDayOfMonth()
+                + visibleDaysInNextMonthDT;
+
+        while(visibleDatesDT.size() < maxCalendarCell){
+            visibleDatesDT.add(calendarDT);
+            calendarDT = calendarDT.plusDays(1);
+        }
+
+        //TODO: is it the same as in GridAdapter?
+        currentDate.setText(String.valueOf(OffsetDateTime.now().getDayOfMonth()));
+
+        /*List<Date> visibleDates = new ArrayList<>();
         Calendar calendar = (Calendar) mainCalendar.clone();
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
@@ -101,7 +139,8 @@ public class CustomCalendarView extends LinearLayout {
         lastDayOfMonth.set(Calendar.DAY_OF_MONTH, mainCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         int visibleDaysInNextMonth = 7 - lastDayOfMonth.get(Calendar.DAY_OF_WEEK);
         // So we can say how many days will be shown on calendar
-        maxCalendarCell = visibleDaysInPreviousMonth + lastDayOfMonth.get(Calendar.DAY_OF_MONTH) + visibleDaysInNextMonth;
+        maxCalendarCell = visibleDaysInPreviousMonth + lastDayOfMonth.get(Calendar.DAY_OF_MONTH)
+                + visibleDaysInNextMonth;
 
         // Put all visible dates in array for GridAdapter to use them in views
         while(visibleDates.size() < maxCalendarCell){
@@ -111,15 +150,17 @@ public class CustomCalendarView extends LinearLayout {
         Log.d(TAG, "Number of date " + visibleDates.size());
 
         String sDate = formatter.format(mainCalendar.getTime());
-        currentDate.setText(sDate);
+        currentDate.setText(sDate);*/
 
-        // TODO: here should be DB query or smth alike
-        List<ConEvent> events = new ArrayList<>();
-        events.add(new ConEvent(new Date(1529583360000L), ConEvent.EventType.PATCH_ON));
+
+
+
+
+
         TrackerApplication application = (TrackerApplication)context.getApplicationContext();
         application.setType(TrackerApplication.ContraceptionType.PATCH);
 
-        mAdapter = new GridAdapter(context, visibleDates, mainCalendar, events);
+        mAdapter = new GridAdapter(context, visibleDatesDT, mainCalendar, events);
         calendarGridView.setAdapter(mAdapter);
     }
 }
