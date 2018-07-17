@@ -28,11 +28,11 @@ public class GridAdapter extends ArrayAdapter {
     private List<Event> events;
     private Context context;
 
-    public GridAdapter(Context context, OffsetDateTime currentDateTime, List<Event> events) {
+    public GridAdapter(Context context, List<Event> events) {
         super(context, R.layout.single_cell_layout);
         this.context = context;
         this.events = events;
-        mainDateTime = currentDateTime;
+        mainDateTime = OffsetDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         calculateVisibleDates();
 
         mInflater = LayoutInflater.from(context);
@@ -42,14 +42,15 @@ public class GridAdapter extends ArrayAdapter {
         visibleDates = new ArrayList<>();
 
         mainDateTime = mainDateTime.withDayOfMonth(1);
-        int visibleDaysInPreviousMonthDT = mainDateTime.withDayOfMonth(1).getDayOfWeek().getValue() - 1;
-        mainDateTime = mainDateTime.minusDays(visibleDaysInPreviousMonthDT);
+        int visibleDaysInPreviousMonth = mainDateTime.withDayOfMonth(1).getDayOfWeek().getValue() - 1;
+        mainDateTime = mainDateTime.minusDays(visibleDaysInPreviousMonth);
 
-        OffsetDateTime lastDayOfMonthDT = OffsetDateTime.now();
-        lastDayOfMonthDT.withDayOfMonth(lastDayOfMonthDT.getMonth().maxLength());
-        int visibleDaysInNextMonthDT = 7 - lastDayOfMonthDT.getDayOfWeek().getValue();
-        int maxCalendarCell = visibleDaysInPreviousMonthDT + lastDayOfMonthDT.getDayOfMonth()
-                + visibleDaysInNextMonthDT;
+        OffsetDateTime lastDayOfMonth = OffsetDateTime.now();
+        int length = lastDayOfMonth.getMonth().maxLength();
+        lastDayOfMonth = lastDayOfMonth.withDayOfMonth(lastDayOfMonth.getMonth().maxLength());
+        int visibleDaysInNextMonth = 7 - lastDayOfMonth.getDayOfWeek().getValue();
+        int maxCalendarCell = visibleDaysInPreviousMonth + lastDayOfMonth.getDayOfMonth()
+                + visibleDaysInNextMonth;
 
         while(visibleDates.size() < maxCalendarCell){
             visibleDates.add(mainDateTime);
@@ -57,6 +58,9 @@ public class GridAdapter extends ArrayAdapter {
         }
     }
 
+    public void setEvents(List<Event> events) {
+        this.events = events;
+    }
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

@@ -20,7 +20,7 @@ public interface EventDao {
     @Query("SELECT * FROM event WHERE type IN (:eventType)")
     LiveData<List<Event>> loadAllByType(Event.EventType eventType);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     void insertAll(Event... events);
 
     @Delete

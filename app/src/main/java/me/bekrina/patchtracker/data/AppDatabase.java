@@ -15,7 +15,7 @@ import org.threeten.bp.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
-@Database(entities = {Event.class}, version = 1)
+@Database(entities = {Event.class}, version = 2)
 @TypeConverters({EventTypeConverter.class, DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
@@ -67,14 +67,18 @@ public abstract class AppDatabase extends RoomDatabase {
             // when it is first created
             dao.deleteAll();
 
-            Event patchOn = new Event(OffsetDateTime.of(2018, 6, 7, 0,
+            Event patchOn = new Event(OffsetDateTime.of(2018, 7, 7, 0,
                     0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_ON);
-            Event patchChange = new Event(OffsetDateTime.of(2018, 6, 14, 0,
+            patchOn.isMarked();
+            Event patchChange = new Event(OffsetDateTime.of(2018, 7, 14, 0,
                     0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_CHANGE);
-            Event patchChange2 = new Event(OffsetDateTime.of(2018, 6, 21, 0,
+            patchChange.isMarked();
+            Event patchChange2 = new Event(OffsetDateTime.of(2018, 7, 21, 0,
                     0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_CHANGE);
-            Event patchOff = new Event(OffsetDateTime.of(2018, 6, 28, 0,
+            patchChange2.isMarked();
+            Event patchOff = new Event(OffsetDateTime.of(2018, 7, 28, 0,
                     0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_OFF);
+            patchOff.isMarked();
 
             dao.insertAll(patchChange, patchChange2, patchOn, patchOff);
 

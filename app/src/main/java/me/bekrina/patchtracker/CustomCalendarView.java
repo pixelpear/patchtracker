@@ -25,7 +25,7 @@ public class CustomCalendarView extends LinearLayout {
     private ImageView nextButton;
     private TextView currentDate;
     private GridView calendarGridView;
-    private OffsetDateTime mainDateTime = OffsetDateTime.now();
+    private OffsetDateTime mainDateTime;// = OffsetDateTime.now();
     private List<Event> events;
     private GridAdapter calendarAdapter;
 
@@ -33,7 +33,7 @@ public class CustomCalendarView extends LinearLayout {
         super(context, attrs);
         this.context = context;
         initializeUiLayout();
-        calendarAdapter = new GridAdapter(context, mainDateTime, events);
+        calendarAdapter = new GridAdapter(context, events);
         calendarGridView.setAdapter(calendarAdapter);
         setPreviousButtonClickEvent();
         setNextButtonClickEvent();
@@ -43,6 +43,7 @@ public class CustomCalendarView extends LinearLayout {
 
     public void setEvents (List<Event> events) {
         this.events = events;
+        calendarAdapter.setEvents(events);
         calendarAdapter.notifyDataSetChanged();
     }
 
@@ -52,7 +53,7 @@ public class CustomCalendarView extends LinearLayout {
         previousButton = (ImageView)view.findViewById(R.id.previous_month);
         nextButton = (ImageView)view.findViewById(R.id.next_month);
         currentDate = (TextView)view.findViewById(R.id.current_month);
-        currentDate.setText(mainDateTime.getMonth().toString());
+        currentDate.setText(OffsetDateTime.now().getMonth().toString());
         calendarGridView = (GridView)view.findViewById(R.id.calendar_grid);
     }
 

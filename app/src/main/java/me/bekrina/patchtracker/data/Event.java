@@ -10,7 +10,7 @@ import org.threeten.bp.OffsetDateTime;
 
 @Entity
 public class Event {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int uid;
 
     public Event(OffsetDateTime date, EventType type) {
