@@ -1,15 +1,10 @@
 package me.bekrina.patchtracker;
 
-import android.app.Application;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModelProviders;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -18,38 +13,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.threeten.bp.OffsetDateTime;
-import org.threeten.bp.ZoneOffset;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
-import me.bekrina.patchtracker.data.AppDatabase;
 import me.bekrina.patchtracker.data.Event;
-import me.bekrina.patchtracker.data.EventViewModel;
 
 public class CustomCalendarView extends LinearLayout {
-    private Context context;
     private static final String TAG = CustomCalendarView.class.getSimpleName();
+    private Context context;
     private ImageView previousButton;
     private ImageView nextButton;
     private TextView currentDate;
     private GridView calendarGridView;
-    private Calendar mainCalendar = Calendar.getInstance(Locale.ENGLISH);
-    private int maxCalendarCell = 42;
-    private SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy", Locale.ENGLISH);
-    //private DatabaseQuery mQuery;  // mock
-    private GridAdapter mAdapter;
+    private OffsetDateTime mainDateTime = OffsetDateTime.now();
     private List<Event> events;
+    private GridAdapter calendarAdapter;
 
     public CustomCalendarView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         initializeUiLayout();
-        setUpCalendarAdapter();
+        calendarAdapter = new GridAdapter(context, mainDateTime, events);
+        calendarGridView.setAdapter(calendarAdapter);
         setPreviousButtonClickEvent();
         setNextButtonClickEvent();
         setGridCellClickEvents();
@@ -58,9 +43,7 @@ public class CustomCalendarView extends LinearLayout {
 
     public void setEvents (List<Event> events) {
         this.events = events;
-        if (mAdapter != null) {
-            mAdapter.notifyDataSetChanged();
-        }
+        calendarAdapter.notifyDataSetChanged();
     }
 
     private void initializeUiLayout() {
@@ -68,7 +51,8 @@ public class CustomCalendarView extends LinearLayout {
         View view = inflater.inflate(R.layout.calendar_layout, this);
         previousButton = (ImageView)view.findViewById(R.id.previous_month);
         nextButton = (ImageView)view.findViewById(R.id.next_month);
-        currentDate = (TextView)view.findViewById(R.id.display_current_date);
+        currentDate = (TextView)view.findViewById(R.id.current_month);
+        currentDate.setText(mainDateTime.getMonth().toString());
         calendarGridView = (GridView)view.findViewById(R.id.calendar_grid);
     }
 
@@ -76,8 +60,9 @@ public class CustomCalendarView extends LinearLayout {
         previousButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mainCalendar.add(Calendar.MONTH, -1);
-                setUpCalendarAdapter();
+                mainDateTime.minusMonths(1);
+                calendarAdapter.drawNewMonth(mainDateTime.getMonth());
+                calendarAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -86,8 +71,9 @@ public class CustomCalendarView extends LinearLayout {
         nextButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mainCalendar.add(Calendar.MONTH, 1);
-                setUpCalendarAdapter();
+                mainDateTime.plusMonths(1);
+                calendarAdapter.drawNewMonth(mainDateTime.getMonth());
+                calendarAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -99,68 +85,5 @@ public class CustomCalendarView extends LinearLayout {
                 Toast.makeText(context, "Clicked " + position, Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    private void setUpCalendarAdapter(){
-        List<OffsetDateTime> visibleDatesDT = new ArrayList<>();
-
-        OffsetDateTime calendarDT = OffsetDateTime.now();
-        calendarDT = calendarDT.withDayOfMonth(1);
-        int visibleDaysInPreviousMonthDT = calendarDT.getDayOfWeek().getValue() - 1;
-        calendarDT = calendarDT.plusDays(-visibleDaysInPreviousMonthDT);
-
-        OffsetDateTime lastDayOfMonthDT = OffsetDateTime.now();
-        lastDayOfMonthDT.withDayOfMonth(lastDayOfMonthDT.getMonth().maxLength());
-        int visibleDaysInNextMonthDT = 7 - lastDayOfMonthDT.getDayOfWeek().getValue();
-        maxCalendarCell = visibleDaysInPreviousMonthDT + lastDayOfMonthDT.getDayOfMonth()
-                + visibleDaysInNextMonthDT;
-
-        while(visibleDatesDT.size() < maxCalendarCell){
-            visibleDatesDT.add(calendarDT);
-            calendarDT = calendarDT.plusDays(1);
-        }
-
-        //TODO: is it the same as in GridAdapter?
-        currentDate.setText(String.valueOf(OffsetDateTime.now().getDayOfMonth()));
-
-        /*List<Date> visibleDates = new ArrayList<>();
-        Calendar calendar = (Calendar) mainCalendar.clone();
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-
-        // If first day of the month is not first in a week, we need to find out
-        // how many days of previous month are visible on screen
-        // Calculate amount of visible days in previous month
-        int visibleDaysInPreviousMonth = calendar.get(Calendar.DAY_OF_WEEK) - 1;
-        // Set calendar to first visible day
-        calendar.add(Calendar.DAY_OF_MONTH, -visibleDaysInPreviousMonth);
-        // Same is for the end of the calendar. If the last day of the month is not last day of week
-        // we need to find out how many days from next month are visible
-        Calendar lastDayOfMonth = (Calendar) mainCalendar.clone();
-        lastDayOfMonth.set(Calendar.DAY_OF_MONTH, mainCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-        int visibleDaysInNextMonth = 7 - lastDayOfMonth.get(Calendar.DAY_OF_WEEK);
-        // So we can say how many days will be shown on calendar
-        maxCalendarCell = visibleDaysInPreviousMonth + lastDayOfMonth.get(Calendar.DAY_OF_MONTH)
-                + visibleDaysInNextMonth;
-
-        // Put all visible dates in array for GridAdapter to use them in views
-        while(visibleDates.size() < maxCalendarCell){
-            visibleDates.add(calendar.getTime());
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
-        }
-        Log.d(TAG, "Number of date " + visibleDates.size());
-
-        String sDate = formatter.format(mainCalendar.getTime());
-        currentDate.setText(sDate);*/
-
-
-
-
-
-
-        TrackerApplication application = (TrackerApplication)context.getApplicationContext();
-        application.setType(TrackerApplication.ContraceptionType.PATCH);
-
-        mAdapter = new GridAdapter(context, visibleDatesDT, mainCalendar, events);
-        calendarGridView.setAdapter(mAdapter);
     }
 }
