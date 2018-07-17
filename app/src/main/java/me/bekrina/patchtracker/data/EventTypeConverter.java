@@ -10,14 +10,10 @@ public class EventTypeConverter {
         switch (type) {
             case PATCH_ON:
                 return 1;
-            case PATCH_CHANGE:
-                return 2;
             case PATCH_OFF:
-                return 3;
+                return 2;
         }
-        return 2;
-        /*throw new EventWithoutTypeException("Event type couldn't be mapped. Type field contains "
-                + type.toString());*/
+        return 3;
     }
     @TypeConverter
     public EventType fromInteger(Integer number) {
@@ -25,12 +21,8 @@ public class EventTypeConverter {
             case 1:
                 return EventType.PATCH_ON;
             case 2:
-                return EventType.PATCH_CHANGE;
-            case 3:
                 return EventType.PATCH_OFF;
         }
         return EventType.PATCH_CHANGE;
-        /*throw new EventWithoutTypeException("Event type couldn't be mapped. Type field contains "
-                + number);*/
     }
 }
