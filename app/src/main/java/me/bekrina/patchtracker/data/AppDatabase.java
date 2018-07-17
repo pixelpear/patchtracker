@@ -69,16 +69,14 @@ public abstract class AppDatabase extends RoomDatabase {
 
             Event patchOn = new Event(OffsetDateTime.of(2018, 7, 7, 0,
                     0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_ON);
-            patchOn.isMarked();
+            patchOn.setMarked(true);
             Event patchChange = new Event(OffsetDateTime.of(2018, 7, 14, 0,
                     0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_CHANGE);
-            patchChange.isMarked();
+            patchChange.setMarked(true);
             Event patchChange2 = new Event(OffsetDateTime.of(2018, 7, 21, 0,
                     0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_CHANGE);
-            patchChange2.isMarked();
             Event patchOff = new Event(OffsetDateTime.of(2018, 7, 28, 0,
                     0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_OFF);
-            patchOff.isMarked();
 
             dao.insertAll(patchChange, patchChange2, patchOn, patchOff);
 
