@@ -1,14 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CalendarActivity">
-    <me.bekrina.patchtracker.CustomCalendarView
-        android:id="@+id/calendar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-    </me.bekrina.patchtracker.CustomCalendarView>
+    <TextView
+        android:id="@+id/textView_month_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/month_name"
+        app:layout_constraintEnd_toStartOf="@+id/arrow_right"
+        app:layout_constraintStart_toEndOf="@+id/arrow_left"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/arrow_left"
+        app:layout_constraintGuide_begin="25dp"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/arrow_left"
+        android:layout_width="0dp"
+        android:layout_height="37dp"
+        android:layout_marginEnd="324dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_left" />
+
+    <ImageView
+        android:id="@+id/arrow_right"
+        android:layout_width="44dp"
+        android:layout_height="37dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/arrow_right" />
+
+    <TextView
+        android:id="@+id/monday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="M"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_mon-tue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
+
+    <TextView
+        android:id="@+id/tuesday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="T"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_tue-wed"
+        app:layout_constraintStart_toEndOf="@id/guideline_mon-tue"
+        app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
+
+    <TextView
+        android:id="@+id/wednesday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="W"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_wed-thu"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/guideline_tue-wed"
+        app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
+
+    <TextView
+        android:id="@+id/thursday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="T"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_thu-fri"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/guideline_wed-thu"
+        app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
+
+    <TextView
+        android:id="@+id/friday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="F"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_fri-sat"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/guideline_thu-fri"
+        app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
+
+    <TextView
+        android:id="@+id/saturday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="S"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sat-sun"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@id/guideline_fri-sat"
+        app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
+
+    <TextView
+        android:id="@+id/sunday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="S"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline_sat-sun"
+        app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier_end-of-headers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="monday,tuesday,wednesday,thursday,friday,saturday,sunday"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_mon-tue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.143" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_tue-wed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.286" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_wed-thu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.429" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_thu-fri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.572" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_fri-sat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.715" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_sat-sun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.858" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier_week_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="barrier_end-of-headers"
+        tools:layout_editor_absoluteY="511dp" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier_week_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="barrier_week_1"
+        tools:layout_editor_absoluteY="511dp" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier_week_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="barrier_week_2"
+        tools:layout_editor_absoluteY="511dp" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier_week_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="barrier_week_3"
+        tools:layout_editor_absoluteY="511dp" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier_week_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="barrier_week_4"
+        tools:layout_editor_absoluteY="511dp" />
+
 </android.support.constraint.ConstraintLayout>

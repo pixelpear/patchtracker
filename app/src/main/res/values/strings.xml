@@ -2,7 +2,7 @@
     <string name="app_name">Patch Tracker</string>
     <string name="text_greeting">Hello!</string>
     <string name="button_select_date">Select first patch date</string>
-    <string name="current_month">Current month</string>
+    <string name="month_name">Month name</string>
     <string name="mon">MON</string>
     <string name="tue">TUE</string>
     <string name="wed">WED</string>
