@@ -6,6 +6,32 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/background</item>
     </style>
 
+    <style name="CalendarCellStyle">
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_height">@dimen/calendar_cell_size</item>
+        <item name="android:layout_width">@dimen/calendar_cell_size</item>
+        <item name="android:textSize">@dimen/calendar_cell_text_size</item>
+    </style>
+
+    <style name="DayOfWeekNameStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="ArrowButtonStyle">
+        <item name="android:layout_width">@dimen/arrowButtonSize</item>
+        <item name="android:layout_height">@dimen/arrowButtonSize</item>
+        <item name="android:layout_marginLeft">@dimen/arrowButtonSideMargin</item>
+        <item name="android:layout_marginRight">@dimen/arrowButtonSideMargin</item>
+    </style>
+
+    <style name="MonthName">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>

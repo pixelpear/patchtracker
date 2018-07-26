@@ -8,130 +8,87 @@
 
     <TextView
         android:id="@+id/textView_month_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        style="@style/MonthName"
         android:text="@string/month_name"
         app:layout_constraintEnd_toStartOf="@+id/arrow_right"
         app:layout_constraintStart_toEndOf="@+id/arrow_left"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/arrow_left"
-        app:layout_constraintGuide_begin="25dp"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/arrow_left"
+        app:layout_constraintBottom_toBottomOf="@+id/arrow_left"/>
 
     <ImageView
         android:id="@+id/arrow_left"
-        android:layout_width="0dp"
-        android:layout_height="37dp"
-        android:layout_marginEnd="324dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
+        style="@style/ArrowButtonStyle"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/arrow_left" />
 
     <ImageView
         android:id="@+id/arrow_right"
-        android:layout_width="44dp"
-        android:layout_height="37dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/ArrowButtonStyle"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/arrow_right" />
 
     <TextView
         android:id="@+id/monday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="M"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_mon-tue"
+        style="@style/DayOfWeekNameStyle"
+        android:text="@string/mon"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_mon-tue"
         app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
 
     <TextView
         android:id="@+id/tuesday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="T"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_tue-wed"
+        style="@style/DayOfWeekNameStyle"
+        android:text="@string/tue"
         app:layout_constraintStart_toEndOf="@id/guideline_mon-tue"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_tue-wed"
         app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
 
     <TextView
         android:id="@+id/wednesday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="W"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_wed-thu"
-        app:layout_constraintHorizontal_bias="0.5"
+        style="@style/DayOfWeekNameStyle"
+        android:text="@string/wed"
         app:layout_constraintStart_toEndOf="@id/guideline_tue-wed"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_wed-thu"
         app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
 
     <TextView
         android:id="@+id/thursday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="T"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_thu-fri"
-        app:layout_constraintHorizontal_bias="0.5"
+        style="@style/DayOfWeekNameStyle"
+        android:text="@string/thu"
         app:layout_constraintStart_toEndOf="@id/guideline_wed-thu"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_thu-fri"
         app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
 
     <TextView
         android:id="@+id/friday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="F"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_fri-sat"
-        app:layout_constraintHorizontal_bias="0.5"
+        style="@style/DayOfWeekNameStyle"
+        android:text="@string/fri"
         app:layout_constraintStart_toEndOf="@id/guideline_thu-fri"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_fri-sat"
         app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
 
     <TextView
         android:id="@+id/saturday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="S"
-        app:layout_constraintEnd_toStartOf="@+id/guideline_sat-sun"
-        app:layout_constraintHorizontal_bias="0.5"
+        style="@style/DayOfWeekNameStyle"
+        android:text="@string/sat"
         app:layout_constraintStart_toEndOf="@id/guideline_fri-sat"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sat-sun"
         app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
 
     <TextView
         android:id="@+id/sunday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="S"
-        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/DayOfWeekNameStyle"
+        android:text="@string/sun"
         app:layout_constraintStart_toEndOf="@id/guideline_sat-sun"
-        app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/arrow_left"/>
 
     <android.support.constraint.Barrier
         android:id="@+id/barrier_end-of-headers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="monday,tuesday,wednesday,thursday,friday,saturday,sunday"
         app:layout_constraintEnd_toEndOf="parent"
@@ -142,243 +99,147 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.143" />
+        app:layout_constraintGuide_percent="@dimen/one_seventh" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline_tue-wed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.286" />
+        app:layout_constraintGuide_percent="@dimen/two_sevenths" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline_wed-thu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.429" />
+        app:layout_constraintGuide_percent="@dimen/three_sevenths" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline_thu-fri"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.572" />
+        app:layout_constraintGuide_percent="@dimen/four_sevenths" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline_fri-sat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.715" />
+        app:layout_constraintGuide_percent="@dimen/five_sevenths" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline_sat-sun"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.858" />
+        app:layout_constraintGuide_percent="@dimen/six_sevenths" />
 
     <TextView
         android:id="@+id/textView_1"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_mon-tue"
         app:layout_constraintTop_toTopOf="@+id/barrier_end-of-headers" />
 
     <TextView
         android:id="@+id/textView_2"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_mon-tue"
         app:layout_constraintEnd_toStartOf="@+id/guideline_tue-wed"
         app:layout_constraintTop_toTopOf="@+id/barrier_end-of-headers" />
 
     <TextView
         android:id="@+id/textView_3"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_tue-wed"
         app:layout_constraintEnd_toStartOf="@+id/guideline_wed-thu"
         app:layout_constraintTop_toTopOf="@+id/barrier_end-of-headers" />
 
     <TextView
         android:id="@+id/textView_4"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_wed-thu"
         app:layout_constraintEnd_toStartOf="@+id/guideline_thu-fri"
         app:layout_constraintTop_toTopOf="@+id/barrier_end-of-headers"/>
 
     <TextView
         android:id="@+id/textView_5"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_thu-fri"
         app:layout_constraintEnd_toStartOf="@+id/guideline_fri-sat"
         app:layout_constraintTop_toTopOf="@+id/barrier_end-of-headers"/>
 
     <TextView
         android:id="@+id/textView_6"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_fri-sat"
         app:layout_constraintEnd_toStartOf="@+id/guideline_sat-sun"
-        app:layout_constraintTop_toTopOf="@+id/barrier_end-of-headers"/>
+        app:layout_constraintTop_toTopOf="@+id/barrier_end-of-headers" />
 
     <TextView
         android:id="@+id/textView_7"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_sat-sun"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/barrier_end-of-headers"/>
+        app:layout_constraintTop_toTopOf="@+id/barrier_end-of-headers" />
 
     <android.support.constraint.Barrier
         android:id="@+id/barrier_week_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="textView_1, textView_2, textView_3,
-        textView_4, textView_5, textView_6, textView_7"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:constraint_referenced_ids="textView_1, textView_2, textView_3,
+        textView_4, textView_5, textView_6, textView_7" />
 
     <TextView
         android:id="@+id/textView_8"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_mon-tue"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_1"/>
 
     <TextView
         android:id="@+id/textView_9"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_mon-tue"
         app:layout_constraintEnd_toStartOf="@+id/guideline_tue-wed"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_1" />
 
     <TextView
         android:id="@+id/textView_10"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_tue-wed"
         app:layout_constraintEnd_toStartOf="@+id/guideline_wed-thu"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_1"/>
 
     <TextView
         android:id="@+id/textView_11"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_wed-thu"
         app:layout_constraintEnd_toStartOf="@+id/guideline_thu-fri"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_1"/>
 
     <TextView
         android:id="@+id/textView_12"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_thu-fri"
         app:layout_constraintEnd_toStartOf="@+id/guideline_fri-sat"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_1"/>
 
     <TextView
         android:id="@+id/textView_13"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_fri-sat"
         app:layout_constraintEnd_toStartOf="@+id/guideline_sat-sun"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_1"/>
 
     <TextView
         android:id="@+id/textView_14"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_sat-sun"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_1"/>
@@ -388,103 +249,56 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="textView_8, textView_9, textView_10,
-        textView_11, textView_12, textView_13"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:constraint_referenced_ids="textView_8, textView_9, textView_10,
+        textView_11, textView_12, textView_13" />
 
     <TextView
         android:id="@+id/textView_15"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_mon-tue"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_2"/>
 
     <TextView
         android:id="@+id/textView_16"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_mon-tue"
         app:layout_constraintEnd_toStartOf="@+id/guideline_tue-wed"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_2" />
 
     <TextView
         android:id="@+id/textView_17"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_tue-wed"
         app:layout_constraintEnd_toStartOf="@+id/guideline_wed-thu"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_2"/>
 
     <TextView
         android:id="@+id/textView_18"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_wed-thu"
         app:layout_constraintEnd_toStartOf="@+id/guideline_thu-fri"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_2"/>
 
     <TextView
         android:id="@+id/textView_19"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_thu-fri"
         app:layout_constraintEnd_toStartOf="@+id/guideline_fri-sat"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_2"/>
 
     <TextView
         android:id="@+id/textView_20"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_fri-sat"
         app:layout_constraintEnd_toStartOf="@+id/guideline_sat-sun"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_2"/>
 
     <TextView
         android:id="@+id/textView_21"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_sat-sun"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_2"/>
@@ -494,103 +308,56 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="textView_14, textView_15, textView_16,
-        textView_17, textView_18, textView_19"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:constraint_referenced_ids="textView_14, textView_15, textView_16,
+        textView_17, textView_18, textView_19" />
 
     <TextView
         android:id="@+id/textView_22"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_mon-tue"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_3"/>
 
     <TextView
         android:id="@+id/textView_23"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_mon-tue"
         app:layout_constraintEnd_toStartOf="@+id/guideline_tue-wed"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_3" />
 
     <TextView
         android:id="@+id/textView_24"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_tue-wed"
         app:layout_constraintEnd_toStartOf="@+id/guideline_wed-thu"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_3"/>
 
     <TextView
         android:id="@+id/textView_25"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_wed-thu"
         app:layout_constraintEnd_toStartOf="@+id/guideline_thu-fri"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_3"/>
 
     <TextView
         android:id="@+id/textView_26"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_thu-fri"
         app:layout_constraintEnd_toStartOf="@+id/guideline_fri-sat"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_3"/>
 
     <TextView
         android:id="@+id/textView_27"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_fri-sat"
         app:layout_constraintEnd_toStartOf="@+id/guideline_sat-sun"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_3"/>
 
     <TextView
         android:id="@+id/textView_28"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_sat-sun"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_3"/>
@@ -600,103 +367,56 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="textView_22, textView_23, textView_24,
-        textView_25, textView_26, textView_27, textView_28"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:constraint_referenced_ids="textView_22, textView_23, textView_24,
+        textView_25, textView_26, textView_27, textView_28" />
 
     <TextView
         android:id="@+id/textView_29"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_mon-tue"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_4"/>
 
     <TextView
         android:id="@+id/textView_30"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_mon-tue"
         app:layout_constraintEnd_toStartOf="@+id/guideline_tue-wed"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_4" />
 
     <TextView
         android:id="@+id/textView_31"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_tue-wed"
         app:layout_constraintEnd_toStartOf="@+id/guideline_wed-thu"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_4"/>
 
     <TextView
         android:id="@+id/textView_32"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_wed-thu"
         app:layout_constraintEnd_toStartOf="@+id/guideline_thu-fri"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_4"/>
 
     <TextView
         android:id="@+id/textView_33"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_thu-fri"
         app:layout_constraintEnd_toStartOf="@+id/guideline_fri-sat"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_4"/>
 
     <TextView
         android:id="@+id/textView_34"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_fri-sat"
         app:layout_constraintEnd_toStartOf="@+id/guideline_sat-sun"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_4"/>
 
     <TextView
         android:id="@+id/textView_35"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_sat-sun"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_4"/>
@@ -706,103 +426,56 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="textView_29, textView_30, textView_31,
-        textView_32, textView_33, textView_34, textView_35"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:constraint_referenced_ids="textView_29, textView_30, textView_31,
+        textView_32, textView_33, textView_34, textView_35"/>
 
     <TextView
         android:id="@+id/textView_36"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_mon-tue"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_5"/>
 
     <TextView
         android:id="@+id/textView_37"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_mon-tue"
         app:layout_constraintEnd_toStartOf="@+id/guideline_tue-wed"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_5" />
 
     <TextView
         android:id="@+id/textView_38"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_tue-wed"
         app:layout_constraintEnd_toStartOf="@+id/guideline_wed-thu"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_5"/>
 
     <TextView
         android:id="@+id/textView_39"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_wed-thu"
         app:layout_constraintEnd_toStartOf="@+id/guideline_thu-fri"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_5"/>
 
     <TextView
         android:id="@+id/textView_40"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_thu-fri"
         app:layout_constraintEnd_toStartOf="@+id/guideline_fri-sat"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_5"/>
 
     <TextView
         android:id="@+id/textView_41"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_fri-sat"
         app:layout_constraintEnd_toStartOf="@+id/guideline_sat-sun"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_5"/>
 
     <TextView
         android:id="@+id/textView_42"
-        android:layout_width="@dimen/calendar_cell_width"
-        android:layout_height="@dimen/calendar_cell_height"
-        android:layout_marginRight="2dp"
-        android:layout_marginLeft="2dp"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_gravity="center"
+        style="@style/CalendarCellStyle"
         app:layout_constraintStart_toStartOf="@+id/guideline_sat-sun"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/barrier_week_5"/>

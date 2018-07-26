@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="calendar_cell_height">72dp</dimen>
-    <dimen name="calendar_cell_width">72dp</dimen>
+    <dimen name="calendar_cell_size">64dp</dimen>
+    <dimen name="calendar_cell_text_size">16sp</dimen>
+    <dimen name="one_seventh">0.143</dimen>
+    <dimen name="two_sevenths">0.286</dimen>
+    <dimen name="three_sevenths">0.429</dimen>
+    <dimen name="four_sevenths">0.572</dimen>
+    <dimen name="five_sevenths">0.715</dimen>
+    <dimen name="six_sevenths">0.858</dimen>
+    <dimen name="arrowButtonSize">40dp</dimen>
+    <dimen name="arrowButtonSideMargin">30dp</dimen>
 </resources>
