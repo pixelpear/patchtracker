@@ -83,7 +83,7 @@ public class GridAdapter extends ArrayAdapter {
         cell.setText(String.valueOf(dateDT.getDayOfMonth()));
         if (events != null) {
             //Add events to the calendar
-            Calendar eventCalendar = Calendar.getInstance();
+            //Calendar eventCalendar = Calendar.getInstance();
             for (int i = 0; i < events.size(); i++) {
                 Event event = events.get(i);
                 OffsetDateTime eventDateDT = event.getDate();

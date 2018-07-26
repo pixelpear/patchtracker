@@ -2,6 +2,7 @@ package me.bekrina.patchtracker;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -85,10 +86,7 @@ public class CalendarActivity extends AppCompatActivity {
         });
     }
 
-
-    private void updateCalendar(OffsetDateTime currentMonthDateTime, List<Event> events) {
-        this.events = events;
-
+    private void findCalendarViews() {
         if (views.size() == 0) {
             views.add((TextView) findViewById(R.id.textView_1));
             views.add((TextView) findViewById(R.id.textView_2));
@@ -133,15 +131,69 @@ public class CalendarActivity extends AppCompatActivity {
             views.add((TextView) findViewById(R.id.textView_41));
             views.add((TextView) findViewById(R.id.textView_42));
         }
+    }
 
+    private void updateCalendar(OffsetDateTime currentMonthDateTime, List<Event> events) {
+        this.events = events;
+
+        findCalendarViews();
         List<OffsetDateTime> visibleDates = calculateVisibleDates(currentMonthDateTime);
-        //for (int i = 0; i < visibleDates.size(); i++) {
-        TextView textView;
-        for (int i = 0; i < views.size(); i++) {
-            textView = views.get(i);
-            textView.setText(String.valueOf(i + 1));
-            textView.setBackground(this.getDrawable(R.drawable.patch_on));
-        }
 
+        // Go through visible dates
+        for(int i = 0; i < visibleDates.size(); i++) {
+            TextView textView = views.get(i);
+            OffsetDateTime date = visibleDates.get(i);
+
+            // Mark day from non-current month with gray color
+            if (date.getMonthValue() != currentMonthDateTime.getMonthValue()) {
+                textView.setBackgroundColor(getResources().getColor(R.color.colorDisabledGray));
+            }
+
+            // Set day of month
+            textView.setText(String.valueOf(date.getDayOfMonth()));
+
+            // Go through events to see if we need to show an event on this day
+            for (int y = 0; y < events.size(); y++) {
+                Event event = events.get(y);
+                OffsetDateTime eventDate = event.getDate();
+                // If event is for current date
+                if (date.getDayOfMonth() == eventDate.getDayOfMonth()
+                        && date.getMonthValue() == eventDate.getMonthValue()) {
+                    Drawable eventImage;
+                    // See its type and set an image
+                    if (event.isMarked()) {
+                        switch (event.getType()) {
+                            case PATCH_ON:
+                                eventImage = getDrawable(R.drawable.patch_on);
+                                textView.setBackground(eventImage);
+                                break;
+                            case PATCH_CHANGE:
+                                eventImage = getDrawable(R.drawable.patch_change);
+                                textView.setBackground(eventImage);
+                                break;
+                            case PATCH_OFF:
+                                eventImage = getDrawable(R.drawable.patch_off);
+                                textView.setBackground(eventImage);
+                                break;
+                        }
+                    } else {
+                        switch (event.getType()) {
+                            case PATCH_ON:
+                                eventImage = getDrawable(R.drawable.patch_on_accent);
+                                textView.setBackground(eventImage);
+                                break;
+                            case PATCH_CHANGE:
+                                eventImage = getDrawable(R.drawable.patch_change_accent);
+                                textView.setBackground(eventImage);
+                                break;
+                            case PATCH_OFF:
+                                eventImage = getDrawable(R.drawable.patch_off_accent);
+                                textView.setBackground(eventImage);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
