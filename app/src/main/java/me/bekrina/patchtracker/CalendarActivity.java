@@ -25,22 +25,19 @@ public class CalendarActivity extends AppCompatActivity {
     private List<Event> events;
     private List<TextView> daysOfMonthViews = new ArrayList<>();
     private TextView monthNameTextView;
-    //private ConstraintLayout layout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-        //layout = (ConstraintLayout) getLayoutInflater().inflate(R.layout.activity_calendar, null);
-        //final CustomCalendarView calendarView = findViewById(R.id.calendar);
         EventViewModel eventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
+
         eventViewModel.getAllEvents().observe(this, new Observer<List<Event>>() {
             @Override
             public void onChanged(@Nullable final List<Event> events) {
-                // Update the cached copy of the events in the view.
-                //calendarView.setEvents(events);
                 updateCalendar(currentMonthDateTime, events);
             }
         });
+
         setNextButtonClickEvent();
         setPreviousButtonClickEvent();
     }
