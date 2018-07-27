@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.threeten.bp.OffsetDateTime;
+import org.threeten.bp.Year;
 import org.threeten.bp.format.TextStyle;
 
 import java.util.ArrayList;
@@ -21,9 +22,9 @@ import me.bekrina.patchtracker.data.EventViewModel;
 
 
 public class CalendarActivity extends AppCompatActivity {
-    private OffsetDateTime currentMonthDateTime = OffsetDateTime.now();
+    private OffsetDateTime visualisingMonth = OffsetDateTime.now();
     private List<Event> events;
-    private List<TextView> daysOfMonthViews = new ArrayList<>();
+    private List<TextView> daysViews = new ArrayList<>();
     private TextView monthNameTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class CalendarActivity extends AppCompatActivity {
         eventViewModel.getAllEvents().observe(this, new Observer<List<Event>>() {
             @Override
             public void onChanged(@Nullable final List<Event> events) {
-                updateCalendar(currentMonthDateTime, events);
+                updateCalendar(visualisingMonth, events);
             }
         });
 
@@ -42,47 +43,51 @@ public class CalendarActivity extends AppCompatActivity {
         setPreviousButtonClickEvent();
     }
 
-    private List<OffsetDateTime> calculateVisibleDates(OffsetDateTime currentMonthDateTime) {
-        List<OffsetDateTime> visibleDates;
-        visibleDates = new ArrayList<>();
+    private List<OffsetDateTime> findVisibleDates(OffsetDateTime currentMonth) {
+        OffsetDateTime currentMonthFirstDay = currentMonth.withDayOfMonth(1);
+        int visibleDaysInPreviousMonth = currentMonthFirstDay.getDayOfWeek().getValue() - 1;
 
-        currentMonthDateTime = currentMonthDateTime.withDayOfMonth(1);
-        int visibleDaysInPreviousMonth = currentMonthDateTime.withDayOfMonth(1).getDayOfWeek().getValue() - 1;
-        currentMonthDateTime = currentMonthDateTime.minusDays(visibleDaysInPreviousMonth);
+        int lengthOfCurrentMonth;
+        Year currentYear = Year.of(currentMonth.getYear());
+        if (!currentYear.isLeap() && currentMonth.getMonthValue() == 2) {
+            lengthOfCurrentMonth = 28;
+        } else {
+            lengthOfCurrentMonth = currentMonth.getMonth().maxLength();
+        }
 
-        OffsetDateTime lastDayOfMonth = OffsetDateTime.now();
-        int length = lastDayOfMonth.getMonth().maxLength();
-        lastDayOfMonth = lastDayOfMonth.withDayOfMonth(lastDayOfMonth.getMonth().maxLength());
+        OffsetDateTime lastDayOfMonth = currentMonth.withDayOfMonth(lengthOfCurrentMonth);
         int visibleDaysInNextMonth = 7 - lastDayOfMonth.getDayOfWeek().getValue();
 
-        int maxCalendarCell = visibleDaysInPreviousMonth + lastDayOfMonth.getDayOfMonth()
+        int amountOfVisibleDates = visibleDaysInPreviousMonth + lengthOfCurrentMonth
                 + visibleDaysInNextMonth;
 
-        while(visibleDates.size() < maxCalendarCell){
-            visibleDates.add(currentMonthDateTime);
-            currentMonthDateTime = currentMonthDateTime.plusDays(1);
+        List<OffsetDateTime> visibleDates = new ArrayList<>();
+        OffsetDateTime earliestVisibleDate = currentMonthFirstDay.minusDays(visibleDaysInPreviousMonth);
+        while(visibleDates.size() < amountOfVisibleDates){
+            visibleDates.add(earliestVisibleDate);
+            earliestVisibleDate = earliestVisibleDate.plusDays(1);
         }
         return visibleDates;
     }
 
     private void setPreviousButtonClickEvent(){
-        ImageView previousButton = (ImageView)findViewById(R.id.arrow_left);
+        ImageView previousButton = findViewById(R.id.arrow_left);
         previousButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentMonthDateTime = currentMonthDateTime.minusMonths(1);
-                updateCalendar(currentMonthDateTime, events);
+                visualisingMonth = visualisingMonth.minusMonths(1);
+                updateCalendar(visualisingMonth, events);
             }
         });
     }
 
     private void setNextButtonClickEvent() {
-        ImageView nextButton = (ImageView)findViewById(R.id.arrow_right);
+        ImageView nextButton = findViewById(R.id.arrow_right);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentMonthDateTime = currentMonthDateTime.plusMonths(1);
-                updateCalendar(currentMonthDateTime, events);
+                visualisingMonth = visualisingMonth.plusMonths(1);
+                updateCalendar(visualisingMonth, events);
             }
         });
     }
@@ -91,68 +96,68 @@ public class CalendarActivity extends AppCompatActivity {
         if (monthNameTextView == null) {
             monthNameTextView = findViewById(R.id.textView_month_name);
         }
-        if (daysOfMonthViews.size() == 0) {
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_1));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_2));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_3));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_4));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_5));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_6));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_7));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_8));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_9));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_10));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_11));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_12));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_13));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_14));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_15));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_16));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_17));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_18));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_19));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_20));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_21));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_22));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_23));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_24));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_25));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_26));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_27));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_28));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_29));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_30));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_31));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_32));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_33));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_34));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_35));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_36));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_37));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_38));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_39));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_40));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_41));
-            daysOfMonthViews.add((TextView) findViewById(R.id.textView_42));
+        if (daysViews.size() == 0) {
+            daysViews.add((TextView) findViewById(R.id.textView_1));
+            daysViews.add((TextView) findViewById(R.id.textView_2));
+            daysViews.add((TextView) findViewById(R.id.textView_3));
+            daysViews.add((TextView) findViewById(R.id.textView_4));
+            daysViews.add((TextView) findViewById(R.id.textView_5));
+            daysViews.add((TextView) findViewById(R.id.textView_6));
+            daysViews.add((TextView) findViewById(R.id.textView_7));
+            daysViews.add((TextView) findViewById(R.id.textView_8));
+            daysViews.add((TextView) findViewById(R.id.textView_9));
+            daysViews.add((TextView) findViewById(R.id.textView_10));
+            daysViews.add((TextView) findViewById(R.id.textView_11));
+            daysViews.add((TextView) findViewById(R.id.textView_12));
+            daysViews.add((TextView) findViewById(R.id.textView_13));
+            daysViews.add((TextView) findViewById(R.id.textView_14));
+            daysViews.add((TextView) findViewById(R.id.textView_15));
+            daysViews.add((TextView) findViewById(R.id.textView_16));
+            daysViews.add((TextView) findViewById(R.id.textView_17));
+            daysViews.add((TextView) findViewById(R.id.textView_18));
+            daysViews.add((TextView) findViewById(R.id.textView_19));
+            daysViews.add((TextView) findViewById(R.id.textView_20));
+            daysViews.add((TextView) findViewById(R.id.textView_21));
+            daysViews.add((TextView) findViewById(R.id.textView_22));
+            daysViews.add((TextView) findViewById(R.id.textView_23));
+            daysViews.add((TextView) findViewById(R.id.textView_24));
+            daysViews.add((TextView) findViewById(R.id.textView_25));
+            daysViews.add((TextView) findViewById(R.id.textView_26));
+            daysViews.add((TextView) findViewById(R.id.textView_27));
+            daysViews.add((TextView) findViewById(R.id.textView_28));
+            daysViews.add((TextView) findViewById(R.id.textView_29));
+            daysViews.add((TextView) findViewById(R.id.textView_30));
+            daysViews.add((TextView) findViewById(R.id.textView_31));
+            daysViews.add((TextView) findViewById(R.id.textView_32));
+            daysViews.add((TextView) findViewById(R.id.textView_33));
+            daysViews.add((TextView) findViewById(R.id.textView_34));
+            daysViews.add((TextView) findViewById(R.id.textView_35));
+            daysViews.add((TextView) findViewById(R.id.textView_36));
+            daysViews.add((TextView) findViewById(R.id.textView_37));
+            daysViews.add((TextView) findViewById(R.id.textView_38));
+            daysViews.add((TextView) findViewById(R.id.textView_39));
+            daysViews.add((TextView) findViewById(R.id.textView_40));
+            daysViews.add((TextView) findViewById(R.id.textView_41));
+            daysViews.add((TextView) findViewById(R.id.textView_42));
         }
     }
 
-    private void updateCalendar(OffsetDateTime currentMonthDateTime, List<Event> events) {
+    private void updateCalendar(OffsetDateTime currentMonth, List<Event> events) {
         this.events = events;
 
         findCalendarViews();
-        List<OffsetDateTime> visibleDates = calculateVisibleDates(currentMonthDateTime);
+        List<OffsetDateTime> visibleDates = findVisibleDates(currentMonth);
 
-        monthNameTextView.setText(currentMonthDateTime.getMonth().getDisplayName(
+        monthNameTextView.setText(currentMonth.getMonth().getDisplayName(
                 TextStyle.FULL_STANDALONE, getResources().getConfiguration().locale));
 
         // Go through visible dates
         for(int i = 0; i < visibleDates.size(); i++) {
-            TextView textView = daysOfMonthViews.get(i);
+            TextView textView = daysViews.get(i);
             OffsetDateTime date = visibleDates.get(i);
 
             // Mark day from non-current month with gray color
-            if (date.getMonthValue() != currentMonthDateTime.getMonthValue()) {
+            if (date.getMonthValue() != currentMonth.getMonthValue()) {
                 textView.setBackgroundColor(getResources().getColor(R.color.colorDisabledGray));
             } else {
                 textView.setBackgroundColor(getResources().getColor(R.color.background));
@@ -167,7 +172,8 @@ public class CalendarActivity extends AppCompatActivity {
                 OffsetDateTime eventDate = event.getDate();
                 // If event is for current date
                 if (date.getDayOfMonth() == eventDate.getDayOfMonth()
-                        && date.getMonthValue() == eventDate.getMonthValue()) {
+                        && date.getMonthValue() == eventDate.getMonthValue()
+                        && date.getYear() == eventDate.getYear()) {
                     Drawable eventImage;
                     // See its type and set an image
                     if (event.isMarked()) {
@@ -202,6 +208,13 @@ public class CalendarActivity extends AppCompatActivity {
                         }
                     }
                 }
+            }
+        }
+        //  Wipe out data from unused views
+        if (visibleDates.size() < daysViews.size()) {
+            for (int i = visibleDates.size(); i < daysViews.size(); i++) {
+                daysViews.get(i).setText("");
+                daysViews.get(i).setBackgroundColor(getResources().getColor(R.color.background));
             }
         }
     }
