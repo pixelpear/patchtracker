@@ -1,14 +1,483 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CalendarActivity">
-    <me.bekrina.patchtracker.CustomCalendarView
-        android:id="@+id/calendar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-    </me.bekrina.patchtracker.CustomCalendarView>
+    <TextView
+        android:id="@+id/textView_month_name"
+        style="@style/MonthName"
+        android:text="@string/month_name"
+        app:layout_constraintEnd_toStartOf="@+id/arrow_right"
+        app:layout_constraintStart_toEndOf="@+id/arrow_left"
+        app:layout_constraintTop_toTopOf="@+id/arrow_left"
+        app:layout_constraintBottom_toBottomOf="@+id/arrow_left"/>
+
+    <ImageView
+        android:id="@+id/arrow_left"
+        style="@style/ArrowButtonStyle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/arrow_left" />
+
+    <ImageView
+        android:id="@+id/arrow_right"
+        style="@style/ArrowButtonStyle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/arrow_right" />
+
+    <TextView
+        android:id="@+id/monday"
+        style="@style/DayOfWeekNameStyle"
+        android:text="@string/mon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_mon-tue"
+        app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
+
+    <TextView
+        android:id="@+id/tuesday"
+        style="@style/DayOfWeekNameStyle"
+        android:text="@string/tue"
+        app:layout_constraintStart_toEndOf="@id/guideline_mon-tue"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_tue-wed"
+        app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
+
+    <TextView
+        android:id="@+id/wednesday"
+        style="@style/DayOfWeekNameStyle"
+        android:text="@string/wed"
+        app:layout_constraintStart_toEndOf="@id/guideline_tue-wed"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_wed-thu"
+        app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
+
+    <TextView
+        android:id="@+id/thursday"
+        style="@style/DayOfWeekNameStyle"
+        android:text="@string/thu"
+        app:layout_constraintStart_toEndOf="@id/guideline_wed-thu"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_thu-fri"
+        app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
+
+    <TextView
+        android:id="@+id/friday"
+        style="@style/DayOfWeekNameStyle"
+        android:text="@string/fri"
+        app:layout_constraintStart_toEndOf="@id/guideline_thu-fri"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_fri-sat"
+        app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
+
+    <TextView
+        android:id="@+id/saturday"
+        style="@style/DayOfWeekNameStyle"
+        android:text="@string/sat"
+        app:layout_constraintStart_toEndOf="@id/guideline_fri-sat"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sat-sun"
+        app:layout_constraintTop_toBottomOf="@+id/arrow_left" />
+
+    <TextView
+        android:id="@+id/sunday"
+        style="@style/DayOfWeekNameStyle"
+        android:text="@string/sun"
+        app:layout_constraintStart_toEndOf="@id/guideline_sat-sun"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/arrow_left"/>
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier_end-of-headers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="monday,tuesday,wednesday,thursday,friday,saturday,sunday"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_mon-tue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="@dimen/one_seventh" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_tue-wed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="@dimen/two_sevenths" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_wed-thu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="@dimen/three_sevenths" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_thu-fri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="@dimen/four_sevenths" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_fri-sat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="@dimen/five_sevenths" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline_sat-sun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="@dimen/six_sevenths" />
+
+    <TextView
+        android:id="@+id/textView_1"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_mon-tue"
+        app:layout_constraintTop_toTopOf="@+id/barrier_end-of-headers" />
+
+    <TextView
+        android:id="@+id/textView_2"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_mon-tue"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_tue-wed"
+        app:layout_constraintTop_toTopOf="@+id/barrier_end-of-headers" />
+
+    <TextView
+        android:id="@+id/textView_3"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_tue-wed"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_wed-thu"
+        app:layout_constraintTop_toTopOf="@+id/barrier_end-of-headers" />
+
+    <TextView
+        android:id="@+id/textView_4"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_wed-thu"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_thu-fri"
+        app:layout_constraintTop_toTopOf="@+id/barrier_end-of-headers"/>
+
+    <TextView
+        android:id="@+id/textView_5"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_thu-fri"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_fri-sat"
+        app:layout_constraintTop_toTopOf="@+id/barrier_end-of-headers"/>
+
+    <TextView
+        android:id="@+id/textView_6"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_fri-sat"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sat-sun"
+        app:layout_constraintTop_toTopOf="@+id/barrier_end-of-headers" />
+
+    <TextView
+        android:id="@+id/textView_7"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_sat-sun"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/barrier_end-of-headers" />
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier_week_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:constraint_referenced_ids="textView_1, textView_2, textView_3,
+        textView_4, textView_5, textView_6, textView_7" />
+
+    <TextView
+        android:id="@+id/textView_8"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_mon-tue"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_1"/>
+
+    <TextView
+        android:id="@+id/textView_9"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_mon-tue"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_tue-wed"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_1" />
+
+    <TextView
+        android:id="@+id/textView_10"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_tue-wed"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_wed-thu"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_1"/>
+
+    <TextView
+        android:id="@+id/textView_11"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_wed-thu"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_thu-fri"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_1"/>
+
+    <TextView
+        android:id="@+id/textView_12"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_thu-fri"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_fri-sat"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_1"/>
+
+    <TextView
+        android:id="@+id/textView_13"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_fri-sat"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sat-sun"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_1"/>
+
+    <TextView
+        android:id="@+id/textView_14"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_sat-sun"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_1"/>
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier_week_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:constraint_referenced_ids="textView_8, textView_9, textView_10,
+        textView_11, textView_12, textView_13" />
+
+    <TextView
+        android:id="@+id/textView_15"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_mon-tue"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_2"/>
+
+    <TextView
+        android:id="@+id/textView_16"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_mon-tue"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_tue-wed"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_2" />
+
+    <TextView
+        android:id="@+id/textView_17"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_tue-wed"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_wed-thu"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_2"/>
+
+    <TextView
+        android:id="@+id/textView_18"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_wed-thu"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_thu-fri"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_2"/>
+
+    <TextView
+        android:id="@+id/textView_19"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_thu-fri"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_fri-sat"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_2"/>
+
+    <TextView
+        android:id="@+id/textView_20"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_fri-sat"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sat-sun"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_2"/>
+
+    <TextView
+        android:id="@+id/textView_21"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_sat-sun"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_2"/>
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier_week_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:constraint_referenced_ids="textView_14, textView_15, textView_16,
+        textView_17, textView_18, textView_19" />
+
+    <TextView
+        android:id="@+id/textView_22"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_mon-tue"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_3"/>
+
+    <TextView
+        android:id="@+id/textView_23"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_mon-tue"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_tue-wed"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_3" />
+
+    <TextView
+        android:id="@+id/textView_24"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_tue-wed"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_wed-thu"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_3"/>
+
+    <TextView
+        android:id="@+id/textView_25"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_wed-thu"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_thu-fri"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_3"/>
+
+    <TextView
+        android:id="@+id/textView_26"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_thu-fri"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_fri-sat"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_3"/>
+
+    <TextView
+        android:id="@+id/textView_27"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_fri-sat"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sat-sun"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_3"/>
+
+    <TextView
+        android:id="@+id/textView_28"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_sat-sun"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_3"/>
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier_week_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:constraint_referenced_ids="textView_22, textView_23, textView_24,
+        textView_25, textView_26, textView_27, textView_28" />
+
+    <TextView
+        android:id="@+id/textView_29"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_mon-tue"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_4"/>
+
+    <TextView
+        android:id="@+id/textView_30"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_mon-tue"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_tue-wed"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_4" />
+
+    <TextView
+        android:id="@+id/textView_31"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_tue-wed"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_wed-thu"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_4"/>
+
+    <TextView
+        android:id="@+id/textView_32"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_wed-thu"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_thu-fri"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_4"/>
+
+    <TextView
+        android:id="@+id/textView_33"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_thu-fri"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_fri-sat"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_4"/>
+
+    <TextView
+        android:id="@+id/textView_34"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_fri-sat"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sat-sun"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_4"/>
+
+    <TextView
+        android:id="@+id/textView_35"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_sat-sun"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_4"/>
+
+    <android.support.constraint.Barrier
+        android:id="@+id/barrier_week_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:constraint_referenced_ids="textView_29, textView_30, textView_31,
+        textView_32, textView_33, textView_34, textView_35"/>
+
+    <TextView
+        android:id="@+id/textView_36"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_mon-tue"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_5"/>
+
+    <TextView
+        android:id="@+id/textView_37"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_mon-tue"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_tue-wed"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_5" />
+
+    <TextView
+        android:id="@+id/textView_38"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_tue-wed"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_wed-thu"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_5"/>
+
+    <TextView
+        android:id="@+id/textView_39"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_wed-thu"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_thu-fri"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_5"/>
+
+    <TextView
+        android:id="@+id/textView_40"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_thu-fri"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_fri-sat"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_5"/>
+
+    <TextView
+        android:id="@+id/textView_41"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_fri-sat"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_sat-sun"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_5"/>
+
+    <TextView
+        android:id="@+id/textView_42"
+        style="@style/CalendarCellStyle"
+        app:layout_constraintStart_toStartOf="@+id/guideline_sat-sun"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/barrier_week_5"/>
+
 </android.support.constraint.ConstraintLayout>
