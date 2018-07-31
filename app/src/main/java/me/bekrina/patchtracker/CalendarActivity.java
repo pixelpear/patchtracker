@@ -2,6 +2,7 @@ package me.bekrina.patchtracker;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import org.threeten.bp.OffsetDateTime;
 import org.threeten.bp.Year;
+import org.threeten.bp.ZoneOffset;
 import org.threeten.bp.format.TextStyle;
 
 import java.util.ArrayList;
@@ -24,12 +26,24 @@ import me.bekrina.patchtracker.data.EventViewModel;
 public class CalendarActivity extends AppCompatActivity {
     private OffsetDateTime visualisingMonth = OffsetDateTime.now();
     private List<Event> events;
-    private List<TextView> daysViews = new ArrayList<>();
-    private TextView monthNameTextView;
+    protected List<TextView> daysViews = new ArrayList<>();
+    protected TextView monthNameTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+
+        // Testing logic
+        // If intent has this extras this run is a test
+        Intent intent = getIntent();
+        if (intent.hasExtra("testCurrentMonth") && intent.hasExtra("testCurrentYear")) {
+            int month = intent.getIntExtra("testCurrentMonth", 0);
+            int year = intent.getIntExtra("testCurrentYear", 0);
+            visualisingMonth = OffsetDateTime.of(year, month,
+                    1, 0, 0, 0, 0, ZoneOffset.UTC);
+        }
+
         EventViewModel eventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
 
         eventViewModel.getAllEvents().observe(this, new Observer<List<Event>>() {
@@ -43,7 +57,29 @@ public class CalendarActivity extends AppCompatActivity {
         setPreviousButtonClickEvent();
     }
 
-    private List<OffsetDateTime> findVisibleDates(OffsetDateTime currentMonth) {
+    private void setPreviousButtonClickEvent(){
+        ImageView previousButton = findViewById(R.id.arrow_left);
+        previousButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                visualisingMonth = visualisingMonth.minusMonths(1);
+                updateCalendar(visualisingMonth, events);
+            }
+        });
+    }
+
+    private void setNextButtonClickEvent() {
+        ImageView nextButton = findViewById(R.id.arrow_right);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                visualisingMonth = visualisingMonth.plusMonths(1);
+                updateCalendar(visualisingMonth, events);
+            }
+        });
+    }
+
+    protected List<OffsetDateTime> findVisibleDates(OffsetDateTime currentMonth) {
         OffsetDateTime currentMonthFirstDay = currentMonth.withDayOfMonth(1);
         int visibleDaysInPreviousMonth = currentMonthFirstDay.getDayOfWeek().getValue() - 1;
 
@@ -70,29 +106,7 @@ public class CalendarActivity extends AppCompatActivity {
         return visibleDates;
     }
 
-    private void setPreviousButtonClickEvent(){
-        ImageView previousButton = findViewById(R.id.arrow_left);
-        previousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                visualisingMonth = visualisingMonth.minusMonths(1);
-                updateCalendar(visualisingMonth, events);
-            }
-        });
-    }
-
-    private void setNextButtonClickEvent() {
-        ImageView nextButton = findViewById(R.id.arrow_right);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                visualisingMonth = visualisingMonth.plusMonths(1);
-                updateCalendar(visualisingMonth, events);
-            }
-        });
-    }
-
-    private void findCalendarViews() {
+    protected void findCalendarViews() {
         if (monthNameTextView == null) {
             monthNameTextView = findViewById(R.id.textView_month_name);
         }
@@ -142,7 +156,7 @@ public class CalendarActivity extends AppCompatActivity {
         }
     }
 
-    private void updateCalendar(OffsetDateTime currentMonth, List<Event> events) {
+    protected void updateCalendar(OffsetDateTime currentMonth, List<Event> events) {
         this.events = events;
 
         findCalendarViews();
