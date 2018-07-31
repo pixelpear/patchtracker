@@ -13,7 +13,7 @@ public class EventRepository {
     EventRepository(Application application) {
         AppDatabase database = AppDatabase.getDatabase(application);
         eventDao = database.eventDao();
-        allEvents = eventDao.getAll();
+        allEvents = eventDao.getAllSortedDesc();
     }
 
     LiveData<List<Event>> getAllEvents() {

@@ -11,10 +11,13 @@ import java.util.List;
 @Dao
 public interface EventDao {
     @Query("SELECT * FROM event ORDER BY date DESC")
-    LiveData<List<Event>> getAll();
+    LiveData<List<Event>> getAllSortedDesc();
 
     @Query("SELECT * FROM event WHERE uid in (:eventIds)")
     LiveData<List<Event>> loadAllByIds(int[] eventIds);
+
+    @Query("SELECT * FROM event WHERE uid in (:eventId)")
+    LiveData<List<Event>> loadById(int eventId);
 
     @Query("SELECT * FROM event WHERE type IN (:eventType)")
     LiveData<List<Event>> loadAllByType(Event.EventType eventType);
