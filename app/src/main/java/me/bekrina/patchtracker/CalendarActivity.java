@@ -1,5 +1,7 @@
 package me.bekrina.patchtracker;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -75,6 +77,27 @@ public class CalendarActivity extends AppCompatActivity {
             public void onClick(View v) {
                 visualisingMonth = visualisingMonth.plusMonths(1);
                 updateCalendar(visualisingMonth, events);
+            }
+        });
+    }
+
+    private void setCellClickEvent(View cell, OffsetDateTime date, @Nullable final Event event) {
+        cell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (event == null) {
+                    AddEventDialog addEventDialog = new AddEventDialog();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.add(addEventDialog, this.getClass().getName());
+                    fragmentTransaction.commit();
+                } else {
+                    EventInfoDialog eventInfoDialog = EventInfoDialog.newInstance(event);
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.add(eventInfoDialog, this.getClass().getName());
+                    fragmentTransaction.commit();
+                }
             }
         });
     }
@@ -169,6 +192,7 @@ public class CalendarActivity extends AppCompatActivity {
         for(int i = 0; i < visibleDates.size(); i++) {
             TextView textView = daysViews.get(i);
             OffsetDateTime date = visibleDates.get(i);
+            setCellClickEvent(textView, date, null);
 
             // Mark day from non-current month with gray color
             if (date.getMonthValue() != currentMonth.getMonthValue()) {
@@ -188,6 +212,7 @@ public class CalendarActivity extends AppCompatActivity {
                 if (date.getDayOfMonth() == eventDate.getDayOfMonth()
                         && date.getMonthValue() == eventDate.getMonthValue()
                         && date.getYear() == eventDate.getYear()) {
+                    setCellClickEvent(textView, date, event);
                     Drawable eventImage;
                     // See its type and set an image
                     if (event.isMarked()) {
