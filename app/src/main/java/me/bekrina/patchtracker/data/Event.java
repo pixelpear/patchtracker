@@ -8,7 +8,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.google.common.io.Resources;
+
 import org.threeten.bp.OffsetDateTime;
+
+import me.bekrina.patchtracker.R;
 
 @Entity
 public class Event implements Parcelable {
@@ -64,7 +68,7 @@ public class Event implements Parcelable {
     }
 
     public enum EventType {
-        PATCH_ON, PATCH_CHANGE, PATCH_OFF
+        PATCH_1, PATCH_2, PATCH_3, NO_PATCH
     }
 
     public int getUid() {

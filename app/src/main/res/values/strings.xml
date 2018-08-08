@@ -16,4 +16,8 @@
     <string name="cancel">Cancel</string>
     <string name="editevent">Edit event</string>
     <string name="delete">Delete</string>
+    <string name="first_patch">Applied first patch</string>
+    <string name="second_patch">Applied second patch</string>
+    <string name="third_patch">Applied third patch</string>
+    <string name="no_patch">Put off patch</string>
 </resources>

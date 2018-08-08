@@ -2,10 +2,10 @@ package me.bekrina.patchtracker;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 
 public class AddEventDialog extends DialogFragment {
     @Override
@@ -23,7 +23,6 @@ public class AddEventDialog extends DialogFragment {
                         // User cancelled the dialog
                     }
                 });
-        // Create the AlertDialog object and return it
         return builder.create();
     }
 }

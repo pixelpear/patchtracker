@@ -20,5 +20,9 @@ public class EventViewModel extends AndroidViewModel {
         return allEvents;
     }
 
-    public void insert(Event word) { repository.insert(word); }
+    public void insert(Event event) { repository.insert(event); }
+
+    public void delete(Event event) {
+        repository.delete(event);
+    }
 }

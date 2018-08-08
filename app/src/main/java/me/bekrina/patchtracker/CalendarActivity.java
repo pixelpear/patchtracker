@@ -1,13 +1,13 @@
 package me.bekrina.patchtracker;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -87,15 +87,15 @@ public class CalendarActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (event == null) {
                     AddEventDialog addEventDialog = new AddEventDialog();
-                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.add(addEventDialog, this.getClass().getName());
                     fragmentTransaction.commit();
                 } else {
-                    EventInfoDialog eventInfoDialog = EventInfoDialog.newInstance(event);
-                    FragmentManager fragmentManager = getFragmentManager();
+                    EventActionsDialog eventActionsDialog = EventActionsDialog.newInstance(event);
+                    FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.add(eventInfoDialog, this.getClass().getName());
+                    fragmentTransaction.add(eventActionsDialog, this.getClass().getName());
                     fragmentTransaction.commit();
                 }
             }
@@ -217,30 +217,38 @@ public class CalendarActivity extends AppCompatActivity {
                     // See its type and set an image
                     if (event.isMarked()) {
                         switch (event.getType()) {
-                            case PATCH_ON:
+                            case PATCH_1:
                                 eventImage = getDrawable(R.drawable.patch_on);
                                 textView.setBackground(eventImage);
                                 break;
-                            case PATCH_CHANGE:
+                            case PATCH_2:
                                 eventImage = getDrawable(R.drawable.patch_change);
                                 textView.setBackground(eventImage);
                                 break;
-                            case PATCH_OFF:
+                            case PATCH_3:
+                                eventImage = getDrawable(R.drawable.patch_change);
+                                textView.setBackground(eventImage);
+                                break;
+                            case NO_PATCH:
                                 eventImage = getDrawable(R.drawable.patch_off);
                                 textView.setBackground(eventImage);
                                 break;
                         }
                     } else {
                         switch (event.getType()) {
-                            case PATCH_ON:
+                            case PATCH_1:
                                 eventImage = getDrawable(R.drawable.patch_on_accent);
                                 textView.setBackground(eventImage);
                                 break;
-                            case PATCH_CHANGE:
+                            case PATCH_2:
                                 eventImage = getDrawable(R.drawable.patch_change_accent);
                                 textView.setBackground(eventImage);
                                 break;
-                            case PATCH_OFF:
+                            case PATCH_3:
+                                eventImage = getDrawable(R.drawable.patch_change_accent);
+                                textView.setBackground(eventImage);
+                                break;
+                            case NO_PATCH:
                                 eventImage = getDrawable(R.drawable.patch_off_accent);
                                 textView.setBackground(eventImage);
                                 break;
@@ -258,3 +266,4 @@ public class CalendarActivity extends AppCompatActivity {
         }
     }
 }
+
