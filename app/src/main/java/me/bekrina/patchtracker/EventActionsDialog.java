@@ -17,17 +17,17 @@ import me.bekrina.patchtracker.data.Event;
 import me.bekrina.patchtracker.data.EventViewModel;
 
 public class EventActionsDialog extends DialogFragment {
-    private static final String EVENT_KEY = "event_key";
+    private static final String EVENT_KEY = "event";
     private Event event;
 
-        public static EventActionsDialog newInstance(Event event) {
-            EventActionsDialog fragment = new EventActionsDialog();
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(EVENT_KEY, event);
-            fragment.setArguments(bundle);
+    public static EventActionsDialog newInstance(Event event) {
+        EventActionsDialog fragment = new EventActionsDialog();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(EVENT_KEY, event);
+        fragment.setArguments(bundle);
 
-            return fragment;
-        }
+        return fragment;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
