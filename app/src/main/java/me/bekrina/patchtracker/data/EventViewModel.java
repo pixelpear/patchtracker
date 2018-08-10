@@ -25,4 +25,8 @@ public class EventViewModel extends AndroidViewModel {
     public void delete(Event event) {
         repository.delete(event);
     }
+
+    public void update(Event event) {
+        repository.update(event);
+    }
 }

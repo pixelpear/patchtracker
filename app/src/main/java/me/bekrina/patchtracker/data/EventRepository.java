@@ -57,4 +57,23 @@ public class EventRepository {
             return null;
         }
     }
+
+    public void update(Event event) {
+        new updateAsynkTask(eventDao).execute(event);
+    }
+    private static class updateAsynkTask extends AsyncTask<Event, Void, Void> {
+
+        private EventDao eventDao;
+
+        updateAsynkTask(EventDao dao) {
+            eventDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Event... params) {
+            eventDao.updateAll(params[0]);
+            return null;
+        }
+    }
+
 }

@@ -15,7 +15,7 @@ import org.threeten.bp.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
-@Database(entities = {Event.class}, version = 2)
+@Database(entities = {Event.class}, version = 3)
 @TypeConverters({EventTypeConverter.class, DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;

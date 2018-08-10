@@ -38,7 +38,7 @@ public class EventActionsDialog extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_eventinfo, null);
         TextView message = dialogView.findViewById(R.id.message);
         message.setText(getMessage(event));
-        OffsetDateTime eventDateTime = event.getDate();
+        OffsetDateTime eventDateTime = event.getPlannedDate();
         TextView time = dialogView.findViewById(R.id.time);
         String timeString = String.valueOf(eventDateTime.getHour()) + ":"
                 + String.valueOf(eventDateTime.getMinute());

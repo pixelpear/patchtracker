@@ -81,12 +81,13 @@ public class CalendarActivity extends AppCompatActivity {
         });
     }
 
-    private void setCellClickEvent(View cell, OffsetDateTime date, @Nullable final Event event) {
+    private void setCellClickEvent(final View cell, final OffsetDateTime date, @Nullable final Event event) {
         cell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (event == null) {
-                    AddEventDialog addEventDialog = new AddEventDialog();
+                    String calendarDate = date.format(EditEventActivity.dateFormatter);
+                    AddEventDialog addEventDialog = AddEventDialog.newInstance(calendarDate);
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.add(addEventDialog, this.getClass().getName());
@@ -207,7 +208,7 @@ public class CalendarActivity extends AppCompatActivity {
             // Go through events to see if we need to show an event on this day
             for (int y = 0; y < events.size(); y++) {
                 Event event = events.get(y);
-                OffsetDateTime eventDate = event.getDate();
+                OffsetDateTime eventDate = event.getPlannedDate();
                 // If event is for current date
                 if (date.getDayOfMonth() == eventDate.getDayOfMonth()
                         && date.getMonthValue() == eventDate.getMonthValue()

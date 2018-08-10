@@ -16,9 +16,9 @@ import me.bekrina.patchtracker.R;
 
 @Entity
 public class Event implements Parcelable {
-    public Event(OffsetDateTime date, EventType type) {
-        this.date = date;
-        this.type = type;
+    public Event(OffsetDateTime plannedDate, EventType type) {
+        setPlannedDate(plannedDate);
+        setType(type);
     }
 
     @PrimaryKey(autoGenerate = true)
@@ -32,10 +32,14 @@ public class Event implements Parcelable {
     @NonNull
     private EventType type;
 
-    @ColumnInfo(name = "date")
+    @ColumnInfo(name = "plannedDate")
     @TypeConverters(DateConverter.class)
     @NonNull
-    private OffsetDateTime date;
+    private OffsetDateTime plannedDate;
+
+    @ColumnInfo(name = "markedDate")
+    @TypeConverters(DateConverter.class)
+    private OffsetDateTime markedDate;
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         public Event createFromParcel(Parcel in) {
@@ -51,7 +55,7 @@ public class Event implements Parcelable {
         this.uid = in.readInt();
         this.marked = in.readByte() != 0;
         this.type = EventType.valueOf(in.readString());
-        this.date = OffsetDateTime.parse(in.readString());
+        this.plannedDate = OffsetDateTime.parse(in.readString());
     }
 
     @Override
@@ -64,7 +68,7 @@ public class Event implements Parcelable {
         dest.writeInt(this.uid);
         dest.writeByte((byte) (marked ? 1 : 0));
         dest.writeString(type.toString());
-        dest.writeString(date.toString());
+        dest.writeString(plannedDate.toString());
     }
 
     public enum EventType {
@@ -79,12 +83,12 @@ public class Event implements Parcelable {
         this.uid = uid;
     }
 
-    public void setDate(@NonNull OffsetDateTime date) {
-        this.date = date;
+    public void setPlannedDate(@NonNull OffsetDateTime date) {
+        this.plannedDate = date;
     }
 
-    public OffsetDateTime getDate() {
-        return date;
+    public OffsetDateTime getPlannedDate() {
+        return plannedDate;
     }
 
     public EventType getType() {
@@ -100,6 +104,17 @@ public class Event implements Parcelable {
     }
 
     public void setMarked(boolean marked) {
+        if (!this.marked && marked) {
+            setMarkedDate(OffsetDateTime.now());
+        }
         this.marked = marked;
+    }
+
+    public OffsetDateTime getMarkedDate() {
+        return markedDate;
+    }
+
+    public void setMarkedDate(OffsetDateTime markedDate) {
+        this.markedDate = markedDate;
     }
 }

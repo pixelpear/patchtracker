@@ -7,30 +7,35 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
+import org.threeten.bp.OffsetDateTime;
+
 import me.bekrina.patchtracker.data.Event;
 
 public class AddEventDialog extends DialogFragment {
-    private static final String EVENT_KEY = "event";
-    private Event event;
+    private String calendarDate;
 
-    public static AddEventDialog newInstance(Event event) {
+    public static AddEventDialog newInstance(String calendarDate) {
         AddEventDialog fragment = new AddEventDialog();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(EVENT_KEY, event);
+        bundle.putString(EditEventActivity.CALENDAR_DATE_KEY, calendarDate);
         fragment.setArguments(bundle);
 
         return fragment;
     }
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        event = (Event) getArguments().getParcelable(EVENT_KEY);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.dialog_add_event)
                 .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Intent intent = new Intent("me.bekrina.patchtracker.EditEventActivity");
                         // TODO: decide what to do with serialising
-                        intent.putExtra(EVENT_KEY, event);
+                        if (getArguments() != null) {
+                            calendarDate = getArguments().getString(EditEventActivity.CALENDAR_DATE_KEY);
+                            if (calendarDate != null) {
+                                intent.putExtra(EditEventActivity.CALENDAR_DATE_KEY, calendarDate);
+                            }
+                        }
                         startActivity(intent);
                     }
                 })

@@ -5,12 +5,15 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import java.util.List;
 
+import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
+
 @Dao
 public interface EventDao {
-    @Query("SELECT * FROM event ORDER BY date DESC")
+    @Query("SELECT * FROM event ORDER BY plannedDate DESC")
     LiveData<List<Event>> getAllSortedDesc();
 
     @Query("SELECT * FROM event WHERE uid in (:eventIds)")
@@ -30,4 +33,7 @@ public interface EventDao {
 
     @Query("DELETE FROM event")
     void deleteAll();
+
+    @Update(onConflict = REPLACE)
+    void updateAll(Event... events);
 }
