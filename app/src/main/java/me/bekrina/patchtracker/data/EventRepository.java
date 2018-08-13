@@ -4,6 +4,8 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
+import org.threeten.bp.OffsetDateTime;
+
 import java.util.List;
 
 public class EventRepository {
@@ -20,8 +22,12 @@ public class EventRepository {
         return allEvents;
     }
 
-    public void insert(Event event) {
+    public void insertAll(Event... event) {
         new insertAsyncTask(eventDao).execute(event);
+    }
+
+    public void insertAll(List<Event> events) {
+        new insertAsyncTask(eventDao).execute(events.toArray(new Event[events.size()]));
     }
 
     private static class insertAsyncTask extends AsyncTask<Event, Void, Void> {
@@ -34,7 +40,9 @@ public class EventRepository {
 
         @Override
         protected Void doInBackground(final Event... params) {
-            asyncTaskDao.insertAll(params[0]);
+            if (params.length > 0) {
+                asyncTaskDao.insertAll(params[0]);
+            }
             return null;
         }
     }
@@ -72,6 +80,25 @@ public class EventRepository {
         @Override
         protected Void doInBackground(final Event... params) {
             eventDao.updateAll(params[0]);
+            return null;
+        }
+    }
+
+    public void deleteAllFutureEvents(OffsetDateTime date) {
+        new deleteAllFutureEventsAsynkTask(eventDao).execute(date);
+    }
+
+    private static class deleteAllFutureEventsAsynkTask extends AsyncTask<OffsetDateTime, Void, Void> {
+
+        private EventDao eventDao;
+
+        deleteAllFutureEventsAsynkTask(EventDao dao) {
+            eventDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final OffsetDateTime... params) {
+            eventDao.deleteAllFutureEvents(params[0]);
             return null;
         }
     }

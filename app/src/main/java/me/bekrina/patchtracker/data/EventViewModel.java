@@ -4,6 +4,8 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 
+import org.threeten.bp.OffsetDateTime;
+
 import java.util.List;
 
 public class EventViewModel extends AndroidViewModel {
@@ -20,7 +22,9 @@ public class EventViewModel extends AndroidViewModel {
         return allEvents;
     }
 
-    public void insert(Event event) { repository.insert(event); }
+    public void insertAll(Event event) { repository.insertAll(event); }
+
+    public void insertAll(List<Event> events) { repository.insertAll(events); }
 
     public void delete(Event event) {
         repository.delete(event);
@@ -28,5 +32,9 @@ public class EventViewModel extends AndroidViewModel {
 
     public void update(Event event) {
         repository.update(event);
+    }
+
+    public void deleteAllFutureEvents(OffsetDateTime date) {
+        repository.deleteAllFutureEvents(date);
     }
 }

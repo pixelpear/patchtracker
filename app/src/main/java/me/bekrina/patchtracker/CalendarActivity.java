@@ -26,7 +26,8 @@ import me.bekrina.patchtracker.data.EventViewModel;
 
 
 public class CalendarActivity extends AppCompatActivity {
-    private OffsetDateTime visualisingMonth = OffsetDateTime.now();
+    private OffsetDateTime visualisingMonth = OffsetDateTime.now().withDayOfMonth(1).withHour(0)
+            .withMinute(0).withSecond(0).withNano(0);
     private List<Event> events;
     protected List<TextView> daysViews = new ArrayList<>();
     protected TextView monthNameTextView;
@@ -81,24 +82,29 @@ public class CalendarActivity extends AppCompatActivity {
         });
     }
 
-    private void setCellClickEvent(final View cell, final OffsetDateTime date, @Nullable final Event event) {
+    private void setCellClickEvent(final View cell, final OffsetDateTime date) {
         cell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (event == null) {
-                    String calendarDate = date.format(EditEventActivity.dateFormatter);
-                    AddEventDialog addEventDialog = AddEventDialog.newInstance(calendarDate);
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.add(addEventDialog, this.getClass().getName());
-                    fragmentTransaction.commit();
-                } else {
-                    EventActionsDialog eventActionsDialog = EventActionsDialog.newInstance(event);
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.add(eventActionsDialog, this.getClass().getName());
-                    fragmentTransaction.commit();
-                }
+                String calendarDate = date.format(EditEventActivity.dateFormatter);
+                AddEventDialog addEventDialog = AddEventDialog.newInstance(calendarDate);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(addEventDialog, this.getClass().getName());
+                fragmentTransaction.commit();
+            }
+        });
+    }
+
+    private void setCellClickEvent(final View cell, final Event event) {
+        cell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventActionsDialog eventActionsDialog = EventActionsDialog.newInstance(event);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(eventActionsDialog, this.getClass().getName());
+                fragmentTransaction.commit();
             }
         });
     }
@@ -188,12 +194,15 @@ public class CalendarActivity extends AppCompatActivity {
 
         monthNameTextView.setText(currentMonth.getMonth().getDisplayName(
                 TextStyle.FULL_STANDALONE, getResources().getConfiguration().locale));
+        // If user open future month, calculatePlannedEvents return events for that month
+        List<Event> plannedEvents = calculatePlannedEvents(events.get(0));
+        events.addAll(plannedEvents);
 
         // Go through visible dates
         for(int i = 0; i < visibleDates.size(); i++) {
             TextView textView = daysViews.get(i);
             OffsetDateTime date = visibleDates.get(i);
-            setCellClickEvent(textView, date, null);
+            setCellClickEvent(textView, date);
 
             // Mark day from non-current month with gray color
             if (date.getMonthValue() != currentMonth.getMonthValue()) {
@@ -213,7 +222,7 @@ public class CalendarActivity extends AppCompatActivity {
                 if (date.getDayOfMonth() == eventDate.getDayOfMonth()
                         && date.getMonthValue() == eventDate.getMonthValue()
                         && date.getYear() == eventDate.getYear()) {
-                    setCellClickEvent(textView, date, event);
+                    setCellClickEvent(textView, event);
                     Drawable eventImage;
                     // See its type and set an image
                     if (event.isMarked()) {
@@ -265,6 +274,21 @@ public class CalendarActivity extends AppCompatActivity {
                 daysViews.get(i).setBackgroundColor(getResources().getColor(R.color.background));
             }
         }
+    }
+    private List<Event> calculatePlannedEvents(Event lastSavedEvent) {
+        List<Event> plannedEvents = new ArrayList<>();
+        // todo: use find next event until next event is in visible month, then calculate events for visible month
+        Event currentEvent = Scheduling.findNextEvent(lastSavedEvent);
+        while (currentEvent.getPlannedDate().withDayOfMonth(1).compareTo(visualisingMonth) < 0) {
+            currentEvent = Scheduling.findNextEvent(currentEvent);
+        }
+        plannedEvents.add(currentEvent);
+        while (currentEvent.getPlannedDate().getMonthValue() == visualisingMonth.getMonthValue()
+                && currentEvent.getPlannedDate().getYear() == visualisingMonth.getYear()) {
+            currentEvent = Scheduling.findNextEvent(currentEvent);
+            plannedEvents.add(currentEvent);
+        }
+        return plannedEvents;
     }
 }
 

@@ -92,34 +92,23 @@ public class EditEventActivity  extends AppCompatActivity {
             public void onClick(View v) {
                 EventViewModel eventViewModel = ViewModelProviders.of(EditEventActivity.this)
                         .get(EventViewModel.class);
+                Event eventToSave;
                 if (createNeuEvent) {
-                    Event eventToSave = createEvent();
-                    eventViewModel.insert(eventToSave);
+                    eventToSave = createEvent();
+                    eventViewModel.insertAll(eventToSave);
                 } else {
-                    switch (typeRadioGroup.getCheckedRadioButtonId()) {
-                        case R.id.patch_1_radio:
-                            event.setType(PATCH_1);
-                            break;
-                        case R.id.patch_2_radio:
-                            event.setType(PATCH_2);
-                            break;
-                        case R.id.patch_3_radio:
-                            event.setType(PATCH_3);
-                            break;
-                        case R.id.no_patch_radio:
-                            event.setType(NO_PATCH);
-                            break;
-                    }
-                    event.setMarked(markedCheckbox.isChecked());
-                    eventViewModel.update(event);
+                    eventToSave = editEvent(event);
+                    eventViewModel.insertAll(eventToSave);
                 }
+                Scheduling scheduling = new Scheduling(EditEventActivity.this);
+                scheduling.rescheduleCalendarStartingFrom(eventToSave);
                 EditEventActivity.this.finish();
             }
         });
     }
 
     private Event createEvent() {
-    OffsetDateTime now = OffsetDateTime.now();
+        OffsetDateTime now = OffsetDateTime.now();
         OffsetDateTime dateOffset = date.toOffsetDateTime()
                 .withHour(now.getHour())
                 .withMinute(now.getMinute());
@@ -141,6 +130,25 @@ public class EditEventActivity  extends AppCompatActivity {
         if (date.getDayOfYear() <= now.getDayOfYear() && date.getYear() <= now.getYear()) {
             event.setMarked(markedCheckbox.isChecked());
         }
+        return event;
+    }
+
+    private Event editEvent(Event event) {
+        switch (typeRadioGroup.getCheckedRadioButtonId()) {
+            case R.id.patch_1_radio:
+                event.setType(PATCH_1);
+                break;
+            case R.id.patch_2_radio:
+                event.setType(PATCH_2);
+                break;
+            case R.id.patch_3_radio:
+                event.setType(PATCH_3);
+                break;
+            case R.id.no_patch_radio:
+                event.setType(NO_PATCH);
+                break;
+        }
+        event.setMarked(markedCheckbox.isChecked());
         return event;
     }
 }

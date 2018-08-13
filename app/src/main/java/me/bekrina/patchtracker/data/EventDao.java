@@ -4,8 +4,11 @@ import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
+
+import org.threeten.bp.OffsetDateTime;
 
 import java.util.List;
 
@@ -25,7 +28,7 @@ public interface EventDao {
     @Query("SELECT * FROM event WHERE type IN (:eventType)")
     LiveData<List<Event>> loadAllByType(Event.EventType eventType);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(Event... events);
 
     @Delete
@@ -33,6 +36,9 @@ public interface EventDao {
 
     @Query("DELETE FROM event")
     void deleteAll();
+
+    @Query("DELETE FROM event WHERE plannedDate > (:date)")
+    void deleteAllFutureEvents(OffsetDateTime date);
 
     @Update(onConflict = REPLACE)
     void updateAll(Event... events);
