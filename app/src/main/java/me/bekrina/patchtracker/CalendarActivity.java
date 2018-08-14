@@ -1,13 +1,19 @@
 package me.bekrina.patchtracker;
 
+import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,6 +30,8 @@ import java.util.List;
 import me.bekrina.patchtracker.data.Event;
 import me.bekrina.patchtracker.data.EventViewModel;
 
+import static android.support.v4.app.NotificationCompat.CATEGORY_REMINDER;
+
 
 public class CalendarActivity extends AppCompatActivity {
     private OffsetDateTime visualisingMonth = OffsetDateTime.now().withDayOfMonth(1).withHour(0)
@@ -31,6 +39,14 @@ public class CalendarActivity extends AppCompatActivity {
     private List<Event> events;
     protected List<TextView> daysViews = new ArrayList<>();
     protected TextView monthNameTextView;
+    Scheduling scheduling;
+
+    NotificationManager mNotificationManager;
+    public static int  NOTIFICATION_ID = 1;
+    private static final String ACTION_NOTIFY =
+            "com.example.android.standup.ACTION_NOTIFY";
+    NotificationCompat.Builder builder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +68,49 @@ public class CalendarActivity extends AppCompatActivity {
         eventViewModel.getAllEvents().observe(this, new Observer<List<Event>>() {
             @Override
             public void onChanged(@Nullable final List<Event> events) {
-                updateCalendar(visualisingMonth, events);
+                drawCalendar(visualisingMonth, events);
             }
         });
 
         setNextButtonClickEvent();
         setPreviousButtonClickEvent();
+
+        scheduling = new Scheduling(CalendarActivity.this);
+        //notifyIn15();
+    }
+
+    private void notifyIn15() {
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+        Intent contentIntent = new Intent(this, CalendarActivity.class);
+        PendingIntent contentPendingIntent = PendingIntent.getActivity
+                (this, NOTIFICATION_ID, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+        builder = new NotificationCompat.Builder(this, CATEGORY_REMINDER)
+                .setSmallIcon(R.drawable.ic_smile)
+                .setContentTitle(getString(R.string.notification_title))
+                .setContentText(getString(R.string.notification_text))
+                .setContentIntent(contentPendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true)
+                .setDefaults(NotificationCompat.DEFAULT_ALL);
+
+        Intent notifyIntent = new Intent(ACTION_NOTIFY);
+        PendingIntent notifyPendingIntent = PendingIntent.getBroadcast
+                (this, NOTIFICATION_ID, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        long triggerTime = SystemClock.elapsedRealtime()
+                + AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+
+        long repeatInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+
+        mNotificationManager.notify(NOTIFICATION_ID, builder.build());
+
+        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                triggerTime, repeatInterval, notifyPendingIntent);
     }
 
     private void setPreviousButtonClickEvent(){
@@ -66,7 +119,7 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 visualisingMonth = visualisingMonth.minusMonths(1);
-                updateCalendar(visualisingMonth, events);
+                drawCalendar(visualisingMonth, events);
             }
         });
     }
@@ -77,7 +130,8 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 visualisingMonth = visualisingMonth.plusMonths(1);
-                updateCalendar(visualisingMonth, events);
+                scheduling.rescheduleCalendarStartingFrom(events.get(0),
+                        visualisingMonth.plusMonths(1).withDayOfMonth(6), false);
             }
         });
     }
@@ -186,7 +240,7 @@ public class CalendarActivity extends AppCompatActivity {
         }
     }
 
-    protected void updateCalendar(OffsetDateTime currentMonth, List<Event> events) {
+    protected void drawCalendar(OffsetDateTime currentMonth, List<Event> events) {
         this.events = events;
 
         findCalendarViews();
@@ -194,9 +248,6 @@ public class CalendarActivity extends AppCompatActivity {
 
         monthNameTextView.setText(currentMonth.getMonth().getDisplayName(
                 TextStyle.FULL_STANDALONE, getResources().getConfiguration().locale));
-        // If user open future month, calculatePlannedEvents return events for that month
-        List<Event> plannedEvents = calculatePlannedEvents(events.get(0));
-        events.addAll(plannedEvents);
 
         // Go through visible dates
         for(int i = 0; i < visibleDates.size(); i++) {
@@ -274,21 +325,6 @@ public class CalendarActivity extends AppCompatActivity {
                 daysViews.get(i).setBackgroundColor(getResources().getColor(R.color.background));
             }
         }
-    }
-    private List<Event> calculatePlannedEvents(Event lastSavedEvent) {
-        List<Event> plannedEvents = new ArrayList<>();
-        // todo: use find next event until next event is in visible month, then calculate events for visible month
-        Event currentEvent = Scheduling.findNextEvent(lastSavedEvent);
-        while (currentEvent.getPlannedDate().withDayOfMonth(1).compareTo(visualisingMonth) < 0) {
-            currentEvent = Scheduling.findNextEvent(currentEvent);
-        }
-        plannedEvents.add(currentEvent);
-        while (currentEvent.getPlannedDate().getMonthValue() == visualisingMonth.getMonthValue()
-                && currentEvent.getPlannedDate().getYear() == visualisingMonth.getYear()) {
-            currentEvent = Scheduling.findNextEvent(currentEvent);
-            plannedEvents.add(currentEvent);
-        }
-        return plannedEvents;
     }
 }
 

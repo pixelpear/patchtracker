@@ -30,10 +30,6 @@ public class EventViewModel extends AndroidViewModel {
         repository.delete(event);
     }
 
-    public void update(Event event) {
-        repository.update(event);
-    }
-
     public void deleteAllFutureEvents(OffsetDateTime date) {
         repository.deleteAllFutureEvents(date);
     }

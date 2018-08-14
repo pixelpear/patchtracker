@@ -41,7 +41,7 @@ public class EventRepository {
         @Override
         protected Void doInBackground(final Event... params) {
             if (params.length > 0) {
-                asyncTaskDao.insertAll(params[0]);
+                asyncTaskDao.insertAll(params);
             }
             return null;
         }

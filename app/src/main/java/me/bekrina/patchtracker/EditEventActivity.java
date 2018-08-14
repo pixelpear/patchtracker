@@ -30,10 +30,11 @@ public class EditEventActivity  extends AppCompatActivity {
     TextView dateTextView;
     ZonedDateTime date;
     Event event;
-    boolean createNeuEvent;
+    boolean createNewEvent;
     public static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     public static String EVENT_KEY = "event";
     public static String CALENDAR_DATE_KEY = "calendar_date";
+    Scheduling scheduling = new Scheduling(EditEventActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +65,11 @@ public class EditEventActivity  extends AppCompatActivity {
             }
             markedCheckbox.setChecked(event.isMarked());
             dateTextView.setText(event.getPlannedDate().format(dateFormatter));
-            createNeuEvent = false;
+            createNewEvent = false;
         } else {
             String calendarDate = intent.getStringExtra(CALENDAR_DATE_KEY);
             dateTextView.setText(calendarDate);
-            createNeuEvent = true;
+            createNewEvent = true;
         }
 
 
@@ -93,15 +94,16 @@ public class EditEventActivity  extends AppCompatActivity {
                 EventViewModel eventViewModel = ViewModelProviders.of(EditEventActivity.this)
                         .get(EventViewModel.class);
                 Event eventToSave;
-                if (createNeuEvent) {
+                if (createNewEvent) {
                     eventToSave = createEvent();
-                    eventViewModel.insertAll(eventToSave);
+                    scheduling.rescheduleCalendarStartingFrom(eventToSave, eventToSave.getPlannedDate()
+                            .plusMonths(1).withDayOfMonth(6), true);
                 } else {
                     eventToSave = editEvent(event);
-                    eventViewModel.insertAll(eventToSave);
+                    scheduling.rescheduleCalendarStartingFrom(eventToSave, eventToSave.getPlannedDate()
+                            .plusMonths(1).withDayOfMonth(6), false);
                 }
-                Scheduling scheduling = new Scheduling(EditEventActivity.this);
-                scheduling.rescheduleCalendarStartingFrom(eventToSave);
+
                 EditEventActivity.this.finish();
             }
         });
