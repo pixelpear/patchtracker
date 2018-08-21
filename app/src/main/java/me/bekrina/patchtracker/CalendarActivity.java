@@ -76,41 +76,6 @@ public class CalendarActivity extends AppCompatActivity {
         setPreviousButtonClickEvent();
 
         scheduling = new Scheduling(CalendarActivity.this);
-        //notifyIn15();
-    }
-
-    private void notifyIn15() {
-        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-        Intent contentIntent = new Intent(this, CalendarActivity.class);
-        PendingIntent contentPendingIntent = PendingIntent.getActivity
-                (this, NOTIFICATION_ID, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-
-        builder = new NotificationCompat.Builder(this, CATEGORY_REMINDER)
-                .setSmallIcon(R.drawable.ic_smile)
-                .setContentTitle(getString(R.string.notification_title))
-                .setContentText(getString(R.string.notification_text))
-                .setContentIntent(contentPendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setAutoCancel(true)
-                .setDefaults(NotificationCompat.DEFAULT_ALL);
-
-        Intent notifyIntent = new Intent(ACTION_NOTIFY);
-        PendingIntent notifyPendingIntent = PendingIntent.getBroadcast
-                (this, NOTIFICATION_ID, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-        long triggerTime = SystemClock.elapsedRealtime()
-                + AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-
-        long repeatInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-
-        mNotificationManager.notify(NOTIFICATION_ID, builder.build());
-
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                triggerTime, repeatInterval, notifyPendingIntent);
     }
 
     private void setPreviousButtonClickEvent(){

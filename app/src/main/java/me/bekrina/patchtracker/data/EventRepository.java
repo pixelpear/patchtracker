@@ -22,6 +22,12 @@ public class EventRepository {
         return allEvents;
     }
 
+    LiveData<List<Event>> loadAllByIds(int [] ids) { return eventDao.loadAllByIds(ids); }
+
+    LiveData<List<Event>> loadAllByDate(OffsetDateTime plannedDate) {
+        plannedDate = plannedDate.withHour(0).withMinute(0).withSecond(0).withNano(0);
+        return eventDao.loadAllByDate(plannedDate);}
+
     public void insertAll(Event... event) {
         new insertAsyncTask(eventDao).execute(event);
     }

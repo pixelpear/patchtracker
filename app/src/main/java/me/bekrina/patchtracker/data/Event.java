@@ -84,7 +84,7 @@ public class Event implements Parcelable {
     }
 
     public void setPlannedDate(@NonNull OffsetDateTime date) {
-        this.plannedDate = date;
+        this.plannedDate = date.withHour(0).withMinute(0).withSecond(0).withNano(0);
     }
 
     public OffsetDateTime getPlannedDate() {

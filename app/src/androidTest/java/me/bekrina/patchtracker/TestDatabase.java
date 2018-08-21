@@ -20,19 +20,19 @@ import me.bekrina.patchtracker.data.Event;
 import me.bekrina.patchtracker.data.EventDao;
 import me.bekrina.patchtracker.data.EventTypeConverter;
 
-@Database(entities = {Event.class}, version = 2)
+@Database(entities = {Event.class}, version = 3)
 @TypeConverters({EventTypeConverter.class, DateConverter.class})
 public abstract class TestDatabase extends RoomDatabase {
-    private static me.bekrina.patchtracker.data.AppDatabase INSTANCE;
+    private static TestDatabase INSTANCE;
     public abstract EventDao eventDao();
 
     //TODO: move singleton to Dagger
-    static me.bekrina.patchtracker.data.AppDatabase getDatabase(final Context context) {
+    static TestDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
-            synchronized (me.bekrina.patchtracker.data.AppDatabase.class) {
+            synchronized (TestDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            me.bekrina.patchtracker.data.AppDatabase.class, "word_database")
+                            TestDatabase .class, "word_database")
                             // Wipes and rebuilds instead of migrating
                             // if no Migration object.
                             // Migration is not part of this practical.
@@ -47,13 +47,19 @@ public abstract class TestDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
+    public TestDatabase() {
+    }
+    public TestDatabase(Context context) {
+        getDatabase(context);
+    }
+
     private static RoomDatabase.Callback roomDatabaseCallback =
             new RoomDatabase.Callback(){
 
                 @Override
                 public void onOpen (@NonNull SupportSQLiteDatabase db){
                     super.onOpen(db);
-                    new me.bekrina.patchtracker.TestDatabase.PopulateDbAsync(INSTANCE).execute();
+                    new TestDatabase.PopulateDbAsync(INSTANCE).execute();
                 }
             };
 
@@ -61,7 +67,7 @@ public abstract class TestDatabase extends RoomDatabase {
 
         private final EventDao dao;
 
-        PopulateDbAsync(me.bekrina.patchtracker.data.AppDatabase db) {
+        PopulateDbAsync(TestDatabase  db) {
             dao = db.eventDao();
         }
 
@@ -73,15 +79,15 @@ public abstract class TestDatabase extends RoomDatabase {
             dao.deleteAll();
 
             Event patchOn = new Event(OffsetDateTime.of(2018, 7, 7, 0,
-                    0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_ON);
+                    0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_1);
             patchOn.setMarked(true);
             Event patchChange = new Event(OffsetDateTime.of(2018, 7, 14, 0,
-                    0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_CHANGE);
+                    0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_2);
             patchChange.setMarked(true);
             Event patchChange2 = new Event(OffsetDateTime.of(2018, 7, 21, 0,
-                    0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_CHANGE);
+                    0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_3);
             Event patchOff = new Event(OffsetDateTime.of(2018, 7, 28, 0,
-                    0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_OFF);
+                    0, 0, 0, ZoneOffset.UTC), Event.EventType.NO_PATCH);
 
             dao.insertAll(patchChange, patchChange2, patchOn, patchOff);
 

@@ -34,7 +34,6 @@ public class EditEventActivity  extends AppCompatActivity {
     public static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     public static String EVENT_KEY = "event";
     public static String CALENDAR_DATE_KEY = "calendar_date";
-    Scheduling scheduling = new Scheduling(EditEventActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +86,7 @@ public class EditEventActivity  extends AppCompatActivity {
     }
 
     private void setSaveButtonClickEvent () {
+        final Scheduling scheduling = new Scheduling(EditEventActivity.this);
         Button previousButton = findViewById(R.id.save_button);
         previousButton.setOnClickListener(new View.OnClickListener() {
             @Override

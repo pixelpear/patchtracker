@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import org.threeten.bp.OffsetDateTime;
 
+import java.util.List;
+
 import me.bekrina.patchtracker.data.Event;
 import me.bekrina.patchtracker.data.EventViewModel;
 
@@ -60,9 +62,11 @@ public class EventActionsDialog extends DialogFragment {
                 })
                 .setNegativeButton(R.string.delete, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        EventActionsDialog.this.getDialog().cancel();
                         EventViewModel eventViewModel = ViewModelProviders.of(getActivity()).get(EventViewModel.class);
                         eventViewModel.delete(event);
+                        //Event test = eventViewModel.loadAllByIds(event.getUid()).getValue().get(0);
+                        List<Event> testList = eventViewModel.loadAllByDate(event.getPlannedDate()).getValue();
+                        EventActionsDialog.this.getDialog().cancel();
                     }
                 });
         return builder.create();

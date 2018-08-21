@@ -22,6 +22,14 @@ public class EventViewModel extends AndroidViewModel {
         return allEvents;
     }
 
+    public LiveData<List<Event>> loadAllByIds(int... ids) {
+        return repository.loadAllByIds(ids);
+    }
+
+    public LiveData<List<Event>> loadAllByDate(OffsetDateTime plannedDate) {
+        return repository.loadAllByDate(plannedDate);
+    }
+
     public void insertAll(Event event) { repository.insertAll(event); }
 
     public void insertAll(List<Event> events) { repository.insertAll(events); }

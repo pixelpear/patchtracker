@@ -23,6 +23,7 @@
     <string name="no_patch">Put off patch</string>
     <string name="event_type_radio_group_header">Type of event</string>
     <string name="marked">I don\'t need a notification today</string>
-    <string name="notification_title">Notification title</string>
-    <string name="notification_text">Notification text</string>
+    <string name="notification_title_next_patch">Apply next patch</string>
+    <string name="notification_title_no_patch">Remove patch</string>
+    <string name="notification_text">Don\'t forget about patch! :)</string>
 </resources>
