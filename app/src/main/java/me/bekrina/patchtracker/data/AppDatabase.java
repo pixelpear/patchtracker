@@ -34,7 +34,7 @@ public abstract class AppDatabase extends RoomDatabase {
                             //TODO: implement Migration
                             // https://medium.com/google-developers/understanding-migrations-with-room-f01e04b07929
                             .fallbackToDestructiveMigration()
-                            .addCallback(roomDatabaseCallback)
+                            //.addCallback(roomDatabaseCallback)
                             .build();
                 }
             }

@@ -17,7 +17,7 @@ public class AddEventDialog extends DialogFragment {
     public static AddEventDialog newInstance(String calendarDate) {
         AddEventDialog fragment = new AddEventDialog();
         Bundle bundle = new Bundle();
-        bundle.putString(EditEventActivity.CALENDAR_DATE_KEY, calendarDate);
+        bundle.putString(CreateEventActivity.CALENDAR_DATE_KEY, calendarDate);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -28,12 +28,11 @@ public class AddEventDialog extends DialogFragment {
         builder.setMessage(R.string.dialog_add_event)
                 .setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Intent intent = new Intent("me.bekrina.patchtracker.EditEventActivity");
-                        // TODO: decide what to do with serialising
+                        Intent intent = new Intent("me.bekrina.patchtracker.CreateEventActivity");
                         if (getArguments() != null) {
-                            calendarDate = getArguments().getString(EditEventActivity.CALENDAR_DATE_KEY);
+                            calendarDate = getArguments().getString(CreateEventActivity.CALENDAR_DATE_KEY);
                             if (calendarDate != null) {
-                                intent.putExtra(EditEventActivity.CALENDAR_DATE_KEY, calendarDate);
+                                intent.putExtra(CreateEventActivity.CALENDAR_DATE_KEY, calendarDate);
                             }
                         }
                         startActivity(intent);

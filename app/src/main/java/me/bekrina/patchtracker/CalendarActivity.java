@@ -41,13 +41,6 @@ public class CalendarActivity extends AppCompatActivity {
     protected TextView monthNameTextView;
     Scheduling scheduling;
 
-    NotificationManager mNotificationManager;
-    public static int  NOTIFICATION_ID = 1;
-    private static final String ACTION_NOTIFY =
-            "com.example.android.standup.ACTION_NOTIFY";
-    NotificationCompat.Builder builder;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,7 +98,7 @@ public class CalendarActivity extends AppCompatActivity {
         cell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String calendarDate = date.format(EditEventActivity.dateFormatter);
+                String calendarDate = date.format(CreateEventActivity.dateFormatter);
                 AddEventDialog addEventDialog = AddEventDialog.newInstance(calendarDate);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

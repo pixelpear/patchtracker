@@ -1,17 +1,10 @@
 package me.bekrina.patchtracker;
 
 import android.app.AlarmManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
-import android.os.SystemClock;
-import android.provider.AlarmClock;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NotificationCompat;
 
 import org.threeten.bp.OffsetDateTime;
 import org.threeten.bp.OffsetTime;
@@ -23,7 +16,6 @@ import me.bekrina.patchtracker.data.Event;
 import me.bekrina.patchtracker.data.EventViewModel;
 
 import static android.content.Context.ALARM_SERVICE;
-import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class Scheduling {
     FragmentActivity parentActivity;
@@ -31,26 +23,23 @@ public class Scheduling {
     private static final String ACTION_NOTIFY =
             "me.bekrina.patchtracker.ACTION_NOTIFY";
     private AlarmManager alarmManager;
+    private EventViewModel eventViewModel;
 
     public Scheduling(FragmentActivity activity) {
         this.parentActivity = activity;
         alarmManager = (AlarmManager) parentActivity.getSystemService(ALARM_SERVICE);
+        eventViewModel =  ViewModelProviders.of(parentActivity).get(EventViewModel.class);
     }
 
-    public void rescheduleCalendarStartingFrom(Event event, OffsetDateTime maximumDateToSchedule,
-                                               boolean markPastEvents) {
-        EventViewModel eventViewModel =  ViewModelProviders.of(parentActivity).get(EventViewModel.class);
-        List<Event> rescheduledEvents = new ArrayList<>();
-
-        OffsetDateTime now = OffsetDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
-        eventViewModel.deleteAllFutureEvents(event.getPlannedDate());
-
+    private List<Event> getNewEvents(Event startingEvent, OffsetDateTime maximumDateToSchedule,
+                                     boolean markPastEvents) {
         //TODO: set Notification for currentEvent at time or immediate if time has passed (Ask to mark?)
-
-        Event currentEvent = event;
+        List<Event> newEvents = new ArrayList<>();
+        OffsetDateTime now = OffsetDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
+        Event currentEvent = startingEvent;
         boolean notificationIsSet = false;
         while (currentEvent.getPlannedDate().compareTo(maximumDateToSchedule) <= 0) {
-            rescheduledEvents.add(currentEvent);
+            newEvents.add(currentEvent);
             if (!currentEvent.isMarked() && currentEvent.getPlannedDate().compareTo(now) < 0) {
                 //TODO: think if we need to communicate it explicitly with user
                 currentEvent.setMarked(markPastEvents);
@@ -66,9 +55,18 @@ public class Scheduling {
             }
             currentEvent = findNextEvent(currentEvent);
         }
+        return newEvents;
+    }
+
+    public void rescheduleCalendarStartingFrom(Event startingEvent, OffsetDateTime maximumDateToSchedule,
+                                               boolean markPastEvents) {
+        eventViewModel.deleteAllFutureEvents(startingEvent.getPlannedDate());
+
+        List<Event> newEvents = getNewEvents(startingEvent,
+                maximumDateToSchedule, markPastEvents);
 
         // todo: use find next event until next event is in visible month, then calculate events for visible month
-        eventViewModel.insertAll(rescheduledEvents);
+        eventViewModel.insertAll(newEvents);
     }
 
     public static Event findNextEvent(Event event) {
