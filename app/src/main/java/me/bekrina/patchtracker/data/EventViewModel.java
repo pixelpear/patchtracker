@@ -41,4 +41,8 @@ public class EventViewModel extends AndroidViewModel {
     public void deleteAllFutureEvents(OffsetDateTime date) {
         repository.deleteAllFutureEvents(date);
     }
+
+    public LiveData<List<Event>> getFutureEvents(OffsetDateTime date){
+        return repository.getFutureEvents(date);
+    }
 }

@@ -43,6 +43,9 @@ public interface EventDao {
     @Query("DELETE FROM event WHERE plannedDate > (:date)")
     void deleteAllFutureEvents(OffsetDateTime date);
 
+    @Query("SELECT * FROM event WHERE plannedDate > (:date) ORDER BY plannedDate ASC")
+    LiveData<List<Event>> getAllFutureEventsSortedAsc(OffsetDateTime date);
+
     @Update(onConflict = REPLACE)
     void updateAll(Event... events);
 }

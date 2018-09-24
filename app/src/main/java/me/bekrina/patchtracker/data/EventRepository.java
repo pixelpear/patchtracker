@@ -109,4 +109,7 @@ public class EventRepository {
         }
     }
 
+    public LiveData<List<Event>> getFutureEvents(OffsetDateTime date) {
+        return eventDao.getAllFutureEventsSortedAsc(date);
+    }
 }

@@ -58,6 +58,17 @@ public class Scheduling {
         return newEvents;
     }
 
+    public void reviewTypesOfNextEvents(Event editedEvent) {
+        Event previousEvent = editedEvent;
+        List<Event> nextEvents = eventViewModel.getFutureEvents(previousEvent.getPlannedDate()).getValue();
+            for (int i = 0; i < nextEvents.size(); i++) {
+                Event currentEvent = nextEvents.get(i);
+                currentEvent.setType(findNextEvent(previousEvent).getType());
+                previousEvent = currentEvent;
+            }
+        eventViewModel.insertAll(nextEvents);
+    }
+
     public void rescheduleCalendarStartingFrom(Event startingEvent, OffsetDateTime maximumDateToSchedule,
                                                boolean markPastEvents) {
         eventViewModel.deleteAllFutureEvents(startingEvent.getPlannedDate());

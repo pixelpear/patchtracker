@@ -1,19 +1,13 @@
 package me.bekrina.patchtracker;
 
-import android.app.AlarmManager;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,8 +24,6 @@ import java.util.List;
 import me.bekrina.patchtracker.data.Event;
 import me.bekrina.patchtracker.data.EventViewModel;
 
-import static android.support.v4.app.NotificationCompat.CATEGORY_REMINDER;
-
 
 public class CalendarActivity extends AppCompatActivity {
     private OffsetDateTime visualisingMonth = OffsetDateTime.now().withDayOfMonth(1).withHour(0)
@@ -40,6 +32,7 @@ public class CalendarActivity extends AppCompatActivity {
     protected List<TextView> daysViews = new ArrayList<>();
     protected TextView monthNameTextView;
     Scheduling scheduling;
+    EventViewModel eventViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +49,7 @@ public class CalendarActivity extends AppCompatActivity {
                     1, 0, 0, 0, 0, ZoneOffset.UTC);
         }
 
-        EventViewModel eventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
+        eventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
 
         eventViewModel.getAllEvents().observe(this, new Observer<List<Event>>() {
             @Override

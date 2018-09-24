@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
-import org.threeten.bp.OffsetDateTime;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 
@@ -30,6 +29,7 @@ public class EditEventActivity  extends AppCompatActivity {
     TextView dateTextView;
     ZonedDateTime date;
     Event event;
+    EventViewModel eventViewModel;
     public static DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     public static String EVENT_KEY = "event";
 
@@ -42,6 +42,7 @@ public class EditEventActivity  extends AppCompatActivity {
         markedCheckbox = findViewById(R.id.marked);
         dateTextView = findViewById(R.id.date);
 
+        eventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
         Intent intent = getIntent();
         event = intent.getParcelableExtra(EVENT_KEY);
 
@@ -83,8 +84,10 @@ public class EditEventActivity  extends AppCompatActivity {
             public void onClick(View v) {
                 Event eventToSave;
                 eventToSave = editEvent(event);
-                scheduling.rescheduleCalendarStartingFrom(eventToSave, eventToSave.getPlannedDate()
-                        .plusMonths(2), false);
+                if (eventToSave.getType() != event.getType()) {
+                    scheduling.reviewTypesOfNextEvents(eventToSave);
+                }
+                eventViewModel.insertAll(eventToSave);
                 EditEventActivity.this.finish();
             }
         });
