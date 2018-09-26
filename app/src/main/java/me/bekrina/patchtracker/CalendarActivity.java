@@ -83,6 +83,7 @@ public class CalendarActivity extends AppCompatActivity {
                 visualisingMonth = visualisingMonth.plusMonths(1);
                 scheduling.rescheduleCalendarStartingFrom(events.get(0),
                         visualisingMonth.plusMonths(1).withDayOfMonth(6), false);
+                drawCalendar(visualisingMonth, events);
             }
         });
     }

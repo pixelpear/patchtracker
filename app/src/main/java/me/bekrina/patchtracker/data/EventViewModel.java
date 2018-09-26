@@ -7,6 +7,7 @@ import android.arch.lifecycle.LiveData;
 import org.threeten.bp.OffsetDateTime;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class EventViewModel extends AndroidViewModel {
     private EventRepository repository;
@@ -30,6 +31,10 @@ public class EventViewModel extends AndroidViewModel {
         return repository.loadAllByDate(plannedDate);
     }
 
+    public List<Event> getFutureEvents(OffsetDateTime date) {
+        return repository.getFutureEvents(date);
+    }
+
     public void insertAll(Event event) { repository.insertAll(event); }
 
     public void insertAll(List<Event> events) { repository.insertAll(events); }
@@ -40,9 +45,5 @@ public class EventViewModel extends AndroidViewModel {
 
     public void deleteAllFutureEvents(OffsetDateTime date) {
         repository.deleteAllFutureEvents(date);
-    }
-
-    public LiveData<List<Event>> getFutureEvents(OffsetDateTime date){
-        return repository.getFutureEvents(date);
     }
 }

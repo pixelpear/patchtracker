@@ -19,11 +19,14 @@ public interface EventDao {
     @Query("SELECT * FROM event ORDER BY plannedDate DESC")
     LiveData<List<Event>> getAllSortedDesc();
 
-    @Query("SELECT * FROM event WHERE uid in (:eventIds)")
-    LiveData<List<Event>> loadAllByIds(int[] eventIds);
-
     @Query("SELECT * FROM event WHERE plannedDate in (:plannedDate)")
     LiveData<List<Event>> loadAllByDate(OffsetDateTime plannedDate);
+
+    @Query("SELECT * FROM event WHERE plannedDate > (:date) ORDER BY plannedDate ASC")
+    List<Event> getAllFutureEventsSortedAsc(OffsetDateTime date);
+
+    @Query("SELECT * FROM event WHERE uid in (:eventIds)")
+    LiveData<List<Event>> loadAllByIds(int[] eventIds);
 
     @Query("SELECT * FROM event WHERE uid in (:eventId)")
     LiveData<Event> loadById(int eventId);
@@ -42,9 +45,6 @@ public interface EventDao {
 
     @Query("DELETE FROM event WHERE plannedDate > (:date)")
     void deleteAllFutureEvents(OffsetDateTime date);
-
-    @Query("SELECT * FROM event WHERE plannedDate > (:date) ORDER BY plannedDate ASC")
-    LiveData<List<Event>> getAllFutureEventsSortedAsc(OffsetDateTime date);
 
     @Update(onConflict = REPLACE)
     void updateAll(Event... events);

@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import org.threeten.bp.OffsetDateTime;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class EventRepository {
     private EventDao eventDao;
@@ -26,7 +27,8 @@ public class EventRepository {
 
     LiveData<List<Event>> loadAllByDate(OffsetDateTime plannedDate) {
         plannedDate = plannedDate.withHour(0).withMinute(0).withSecond(0).withNano(0);
-        return eventDao.loadAllByDate(plannedDate);}
+        return eventDao.loadAllByDate(plannedDate);
+    }
 
     public void insertAll(Event... event) {
         new insertAsyncTask(eventDao).execute(event);
@@ -109,7 +111,28 @@ public class EventRepository {
         }
     }
 
-    public LiveData<List<Event>> getFutureEvents(OffsetDateTime date) {
-        return eventDao.getAllFutureEventsSortedAsc(date);
+    public List<Event> getFutureEvents(OffsetDateTime date) {
+        try {
+            return new getFutureEventsAsynkTask(eventDao).execute(date).get();
+        } catch (InterruptedException e) {
+            return null;
+        } catch (ExecutionException e) {
+            return null;
+        }
     }
+
+    private static class getFutureEventsAsynkTask extends AsyncTask<OffsetDateTime, List<Event>, List<Event>> {
+
+        private EventDao eventDao;
+
+        getFutureEventsAsynkTask(EventDao dao) {
+            eventDao = dao;
+        }
+
+        @Override
+        protected List<Event> doInBackground(final OffsetDateTime... params) {
+            return eventDao.getAllFutureEventsSortedAsc(params[0]);
+        }
+    }
+
 }

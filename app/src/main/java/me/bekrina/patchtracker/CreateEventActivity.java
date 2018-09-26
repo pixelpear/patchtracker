@@ -67,8 +67,8 @@ public class CreateEventActivity  extends AppCompatActivity {
             public void onClick(View v) {
                 Event eventToSave;
                 eventToSave = createEvent();
-                scheduling.rescheduleCalendarStartingFrom(eventToSave, eventToSave.getPlannedDate()
-                        .plusMonths(2), true);
+                scheduling.rescheduleCalendarStartingFrom(eventToSave, OffsetDateTime.now()
+                        .plusMonths(1), true);
                 CreateEventActivity.this.finish();
             }
         });
