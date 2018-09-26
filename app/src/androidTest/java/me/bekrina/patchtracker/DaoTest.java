@@ -34,15 +34,26 @@ public class DaoTest {
 
     @After
     public void closeDb() throws IOException {
-        mDb.close();
+        //mDb.close();
     }
 
     @Test
     public void writeEventAndReadInList() throws Exception {
-        Event event = new Event(OffsetDateTime.now(), Event.EventType.PATCH_ON);
+        Event event = new Event(OffsetDateTime.now(), Event.EventType.PATCH_1);
         event.setMarked(true);
         mEventDao.insertAll(event);
-        List<Event> byName = mEventDao.loadById(event.getUid()).getValue();
-        assertThat(byName.get(0), equalTo(event));
+        Event byName = mEventDao.loadById(event.getUid()).getValue();
+        assertThat(byName, equalTo(event));
+    }
+
+    @Test
+    public void deleteEvent() {
+        Event event = new Event(OffsetDateTime.now(), Event.EventType.PATCH_1);
+        event.setMarked(true);
+        mEventDao.insertAll(event);
+        Event byName = mEventDao.loadById(event.getUid()).getValue();
+        assertThat(byName, equalTo(event));
+        mEventDao.delete(event);
+        assertThat(mEventDao.loadById(event.getUid()), null);
     }
 }

@@ -11,4 +11,19 @@
     <string name="sat">SAT</string>
     <string name="sun">SUN</string>
     <string name="last_date">last date</string>
+    <string name="dialog_add_event">Add event</string>
+    <string name="add">Add</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="editevent">Edit event</string>
+    <string name="delete">Delete</string>
+    <string name="first_patch">Applied first patch</string>
+    <string name="second_patch">Applied second patch</string>
+    <string name="third_patch">Applied third patch</string>
+    <string name="no_patch">Put off patch</string>
+    <string name="event_type_radio_group_header">Type of event</string>
+    <string name="marked">I don\'t need a notification today</string>
+    <string name="notification_title_next_patch">Apply next patch</string>
+    <string name="notification_title_no_patch">Remove patch</string>
+    <string name="notification_text">Don\'t forget about patch! :)</string>
 </resources>

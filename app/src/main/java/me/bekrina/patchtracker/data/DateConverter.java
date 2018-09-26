@@ -10,11 +10,19 @@ public class DateConverter {
 
     @TypeConverter
     public OffsetDateTime fromString(String value) {
-            return OffsetDateTime.parse(value, formatter);
+        OffsetDateTime date = null;
+        if (!value.equals("")){
+            date = OffsetDateTime.parse(value, formatter);
+        }
+        return date;
     }
 
     @TypeConverter
     public String fromOffsetDateTime(OffsetDateTime date) {
-        return date.format(formatter);
+        String formattedDate = "";
+        if (date != null) {
+            formattedDate = date.format(formatter);
+        }
+        return formattedDate;
     }
 }

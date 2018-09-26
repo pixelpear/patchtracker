@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -24,10 +26,13 @@ import me.bekrina.patchtracker.data.EventViewModel;
 
 
 public class CalendarActivity extends AppCompatActivity {
-    private OffsetDateTime visualisingMonth = OffsetDateTime.now();
+    private OffsetDateTime visualisingMonth = OffsetDateTime.now().withDayOfMonth(1).withHour(0)
+            .withMinute(0).withSecond(0).withNano(0);
     private List<Event> events;
     protected List<TextView> daysViews = new ArrayList<>();
     protected TextView monthNameTextView;
+    Scheduling scheduling;
+    EventViewModel eventViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,17 +49,19 @@ public class CalendarActivity extends AppCompatActivity {
                     1, 0, 0, 0, 0, ZoneOffset.UTC);
         }
 
-        EventViewModel eventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
+        eventViewModel = ViewModelProviders.of(this).get(EventViewModel.class);
 
         eventViewModel.getAllEvents().observe(this, new Observer<List<Event>>() {
             @Override
             public void onChanged(@Nullable final List<Event> events) {
-                updateCalendar(visualisingMonth, events);
+                drawCalendar(visualisingMonth, events);
             }
         });
 
         setNextButtonClickEvent();
         setPreviousButtonClickEvent();
+
+        scheduling = new Scheduling(CalendarActivity.this);
     }
 
     private void setPreviousButtonClickEvent(){
@@ -63,7 +70,7 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 visualisingMonth = visualisingMonth.minusMonths(1);
-                updateCalendar(visualisingMonth, events);
+                drawCalendar(visualisingMonth, events);
             }
         });
     }
@@ -74,7 +81,36 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 visualisingMonth = visualisingMonth.plusMonths(1);
-                updateCalendar(visualisingMonth, events);
+                scheduling.rescheduleCalendarStartingFrom(events.get(0),
+                        visualisingMonth.plusMonths(1).withDayOfMonth(6), false);
+                drawCalendar(visualisingMonth, events);
+            }
+        });
+    }
+
+    private void setCellClickEvent(final View cell, final OffsetDateTime date) {
+        cell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String calendarDate = date.format(CreateEventActivity.dateFormatter);
+                AddEventDialog addEventDialog = AddEventDialog.newInstance(calendarDate);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(addEventDialog, this.getClass().getName());
+                fragmentTransaction.commit();
+            }
+        });
+    }
+
+    private void setCellClickEvent(final View cell, final Event event) {
+        cell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventActionsDialog eventActionsDialog = EventActionsDialog.newInstance(event);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(eventActionsDialog, this.getClass().getName());
+                fragmentTransaction.commit();
             }
         });
     }
@@ -156,7 +192,7 @@ public class CalendarActivity extends AppCompatActivity {
         }
     }
 
-    protected void updateCalendar(OffsetDateTime currentMonth, List<Event> events) {
+    protected void drawCalendar(OffsetDateTime currentMonth, List<Event> events) {
         this.events = events;
 
         findCalendarViews();
@@ -169,6 +205,7 @@ public class CalendarActivity extends AppCompatActivity {
         for(int i = 0; i < visibleDates.size(); i++) {
             TextView textView = daysViews.get(i);
             OffsetDateTime date = visibleDates.get(i);
+            setCellClickEvent(textView, date);
 
             // Mark day from non-current month with gray color
             if (date.getMonthValue() != currentMonth.getMonthValue()) {
@@ -183,39 +220,48 @@ public class CalendarActivity extends AppCompatActivity {
             // Go through events to see if we need to show an event on this day
             for (int y = 0; y < events.size(); y++) {
                 Event event = events.get(y);
-                OffsetDateTime eventDate = event.getDate();
+                OffsetDateTime eventDate = event.getPlannedDate();
                 // If event is for current date
                 if (date.getDayOfMonth() == eventDate.getDayOfMonth()
                         && date.getMonthValue() == eventDate.getMonthValue()
                         && date.getYear() == eventDate.getYear()) {
+                    setCellClickEvent(textView, event);
                     Drawable eventImage;
                     // See its type and set an image
                     if (event.isMarked()) {
                         switch (event.getType()) {
-                            case PATCH_ON:
+                            case PATCH_1:
                                 eventImage = getDrawable(R.drawable.patch_on);
                                 textView.setBackground(eventImage);
                                 break;
-                            case PATCH_CHANGE:
+                            case PATCH_2:
                                 eventImage = getDrawable(R.drawable.patch_change);
                                 textView.setBackground(eventImage);
                                 break;
-                            case PATCH_OFF:
+                            case PATCH_3:
+                                eventImage = getDrawable(R.drawable.patch_change);
+                                textView.setBackground(eventImage);
+                                break;
+                            case NO_PATCH:
                                 eventImage = getDrawable(R.drawable.patch_off);
                                 textView.setBackground(eventImage);
                                 break;
                         }
                     } else {
                         switch (event.getType()) {
-                            case PATCH_ON:
+                            case PATCH_1:
                                 eventImage = getDrawable(R.drawable.patch_on_accent);
                                 textView.setBackground(eventImage);
                                 break;
-                            case PATCH_CHANGE:
+                            case PATCH_2:
                                 eventImage = getDrawable(R.drawable.patch_change_accent);
                                 textView.setBackground(eventImage);
                                 break;
-                            case PATCH_OFF:
+                            case PATCH_3:
+                                eventImage = getDrawable(R.drawable.patch_change_accent);
+                                textView.setBackground(eventImage);
+                                break;
+                            case NO_PATCH:
                                 eventImage = getDrawable(R.drawable.patch_off_accent);
                                 textView.setBackground(eventImage);
                                 break;
@@ -233,3 +279,4 @@ public class CalendarActivity extends AppCompatActivity {
         }
     }
 }
+

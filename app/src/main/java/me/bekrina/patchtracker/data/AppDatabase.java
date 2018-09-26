@@ -15,7 +15,7 @@ import org.threeten.bp.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
-@Database(entities = {Event.class}, version = 2)
+@Database(entities = {Event.class}, version = 3)
 @TypeConverters({EventTypeConverter.class, DateConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase INSTANCE;
@@ -34,7 +34,7 @@ public abstract class AppDatabase extends RoomDatabase {
                             //TODO: implement Migration
                             // https://medium.com/google-developers/understanding-migrations-with-room-f01e04b07929
                             .fallbackToDestructiveMigration()
-                            .addCallback(roomDatabaseCallback)
+                            //.addCallback(roomDatabaseCallback)
                             .build();
                 }
             }
@@ -68,15 +68,15 @@ public abstract class AppDatabase extends RoomDatabase {
             dao.deleteAll();
 
             Event patchOn = new Event(OffsetDateTime.of(2018, 7, 7, 0,
-                    0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_ON);
+                    0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_1);
             patchOn.setMarked(true);
             Event patchChange = new Event(OffsetDateTime.of(2018, 7, 14, 0,
-                    0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_CHANGE);
+                    0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_2);
             patchChange.setMarked(true);
             Event patchChange2 = new Event(OffsetDateTime.of(2018, 7, 21, 0,
-                    0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_CHANGE);
+                    0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_3);
             Event patchOff = new Event(OffsetDateTime.of(2018, 7, 28, 0,
-                    0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_OFF);
+                    0, 0, 0, ZoneOffset.UTC), Event.EventType.NO_PATCH);
 
             dao.insertAll(patchChange, patchChange2, patchOn, patchOff);
 

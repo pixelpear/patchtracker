@@ -65,15 +65,15 @@ public class CalendarActivityUnitTest {
     public void updateCalendar() {
         // Test events
         Event patchOn = new Event(OffsetDateTime.of(2018, 6, 7, 0,
-                0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_ON);
+                0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_1);
         patchOn.setMarked(true);
         Event patchChange = new Event(OffsetDateTime.of(2018, 6, 14, 0,
-                0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_CHANGE);
+                0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_2);
         patchChange.setMarked(true);
         Event patchChange2 = new Event(OffsetDateTime.of(2018, 6, 21, 0,
-                0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_CHANGE);
+                0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_3);
         Event patchOff = new Event(OffsetDateTime.of(2018, 6, 28, 0,
-                0, 0, 0, ZoneOffset.UTC), Event.EventType.PATCH_OFF);
+                0, 0, 0, ZoneOffset.UTC), Event.EventType.NO_PATCH);
         List<Event> events = new ArrayList<>();
         events.add(patchOn);
         events.add(patchChange);
